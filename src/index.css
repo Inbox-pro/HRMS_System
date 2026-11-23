@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    /* Single Brand Accent: Deep Teal */
+    --brand-primary: #0D6B5C;
+    --brand-primary-hover: #0A5347;
+    --brand-primary-active: #083F36;
+    --brand-subtle: #F0F7F5;
+    --brand-border: #D1E7E2;
+    --brand-ring: rgba(13, 107, 92, 0.15);
+
+    /* Neutral Scale - Pure Linear/Stripe Calm Greys */
+    --bg-page: #F8F9FA;
+    --bg-surface: #FFFFFF;
+    --bg-surface-subtle: #F4F5F6;
+    --bg-surface-hover: #F0F2F4;
+    --border-subtle: #ECEEF0;
+    --border-default: #E1E4E8;
+    --border-strong: #D0D4DA;
+
+    /* Text Hierarchy */
+    --text-primary: #1A1D20;
+    --text-secondary: #5A626E;
+    --text-tertiary: #848D9A;
+    --text-muted: #A3ABB7;
+    --text-inverse: #FFFFFF;
+
+    /* Semantic Tones (Used only for data values, never for heavy decorative backgrounds) */
+    --success: #1E7E34;
+    --success-text: #1E7E34;
+    --success-subtle: #F0FDF4;
+
+    --warning: #B7791F;
+    --warning-text: #B7791F;
+    --warning-subtle: #FFFBEB;
+
+    --danger: #D9383A;
+    --danger-text: #D9383A;
+    --danger-subtle: #FEF2F2;
+
+    --info: #2B6CB0;
+    --info-text: #2B6CB0;
+    --info-subtle: #F0F7FF;
+  }
+
+  .dark {
+    /* Brand Accent Dark */
+    --brand-primary: #148A76;
+    --brand-primary-hover: #18A38B;
+    --brand-primary-active: #1CBCA1;
+    --brand-subtle: #0D2420;
+    --brand-border: #1B453D;
+    --brand-ring: rgba(20, 138, 118, 0.25);
+
+    /* Neutral Scale Dark - Deep Charcoal & Slate */
+    --bg-page: #0C0E11;
+    --bg-surface: #121519;
+    --bg-surface-subtle: #181C22;
+    --bg-surface-hover: #1E232B;
+    --border-subtle: #1E232B;
+    --border-default: #282E38;
+    --border-strong: #38414E;
+
+    /* Text Dark */
+    --text-primary: #F0F2F5;
+    --text-secondary: #9CA5B3;
+    --text-tertiary: #6E7785;
+    --text-muted: #4F5763;
+    --text-inverse: #0C0E11;
+
+    --success: #38A169;
+    --success-text: #48BB78;
+    --success-subtle: #0D2818;
+
+    --warning: #D69E2E;
+    --warning-text: #ECC94B;
+    --warning-subtle: #281F0B;
+
+    --danger: #E53E3E;
+    --danger-text: #F56565;
+    --danger-subtle: #2D1214;
+
+    --info: #3182CE;
+    --info-text: #63B3ED;
+    --info-subtle: #0E2238;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for strict numerical alignment */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* Refined custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* Subtle focus rings */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 1px;
+}
