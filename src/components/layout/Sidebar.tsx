@@ -14,14 +14,13 @@ import {
   Building2,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import type { UserRole } from '../../types';
+import { useHrms } from '../../context/HrmsContext';
 
 interface SidebarProps {
   collapsed: boolean;
   onToggleCollapse: () => void;
   activeNav: string;
   onSelectNav: (id: string) => void;
-  role: UserRole;
 }
 
 interface NavGroup {
@@ -34,8 +33,15 @@ interface NavGroup {
   }[];
 }
 
-export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, role }: SidebarProps) {
-  // Define Role-Based Navigation Groups
+export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav }: SidebarProps) {
+  const { role, employees, approvals, requisitions, tickets, currentUser } = useHrms();
+
+  const pendingLeaveCount = approvals.filter(
+    (a) => a.type === 'leave' && a.status === 'pending'
+  ).length;
+  const openRequisitionsCount = requisitions.filter((r) => r.status !== 'Closed').length;
+  const activeTicketsCount = tickets.filter((t) => t.status !== 'Resolved').length;
+
   let navGroups: NavGroup[] = [];
 
   if (role === 'employee') {
@@ -47,14 +53,14 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
           { id: 'time_leave', label: 'My Time & Leaves', icon: CalendarDays, badge: '14.5d' },
           { id: 'payroll', label: 'My Pay & Tax', icon: CreditCard, badge: 'Nov slip' },
           { id: 'performance', label: 'My Goals & Learning', icon: GraduationCap, badge: '1 due' },
-          { id: 'helpdesk', label: 'My Service Tickets', icon: LifeBuoy, badge: '2' },
+          { id: 'helpdesk', label: 'My Service Tickets', icon: LifeBuoy, badge: activeTicketsCount > 0 ? String(activeTicketsCount) : undefined },
         ],
       },
       {
         groupTitle: 'COMPANY & COMMUNITY',
         items: [
-          { id: 'people', label: 'Directory & Org', icon: Users },
-          { id: 'hiring', label: 'Internal Job Board (IJP)', icon: UserPlus, badge: '24' },
+          { id: 'people', label: 'Directory & Org', icon: Users, badge: `${employees.length}` },
+          { id: 'hiring', label: 'Internal Job Board (IJP)', icon: UserPlus, badge: `${openRequisitionsCount}` },
           { id: 'engagement', label: 'Culture & Recognition', icon: HeartHandshake },
         ],
       },
@@ -66,10 +72,10 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
         items: [
           { id: 'dashboard', label: 'Manager Hub', icon: LayoutDashboard },
           { id: 'people', label: 'My Team & Directory', icon: Users, badge: '18' },
-          { id: 'time_leave', label: 'Team Attendance', icon: CalendarDays, badge: '3 req' },
-          { id: 'hiring', label: 'Team Requisitions', icon: UserPlus, badge: '2 open' },
+          { id: 'time_leave', label: 'Team Attendance', icon: CalendarDays, badge: pendingLeaveCount > 0 ? `${pendingLeaveCount} req` : undefined },
+          { id: 'hiring', label: 'Team Requisitions', icon: UserPlus, badge: `${openRequisitionsCount} open` },
           { id: 'performance', label: 'Team Reviews & Goals', icon: GraduationCap },
-          { id: 'helpdesk', label: 'Helpdesk & Requests', icon: LifeBuoy },
+          { id: 'helpdesk', label: 'Helpdesk & Requests', icon: LifeBuoy, badge: activeTicketsCount > 0 ? String(activeTicketsCount) : undefined },
         ],
       },
       {
@@ -87,11 +93,11 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
         groupTitle: 'CORE HR & OPERATIONS',
         items: [
           { id: 'dashboard', label: 'Home (Admin)', icon: LayoutDashboard },
-          { id: 'people', label: 'People Operations', icon: Users, badge: '1,284' },
-          { id: 'time_leave', label: 'Time & Attendance', icon: CalendarDays, badge: '3' },
+          { id: 'people', label: 'People Operations', icon: Users, badge: `${1280 + employees.length - 8}` },
+          { id: 'time_leave', label: 'Time & Attendance', icon: CalendarDays, badge: pendingLeaveCount > 0 ? String(pendingLeaveCount) : undefined },
           { id: 'payroll', label: 'Payroll & Statutory', icon: CreditCard, badge: 'Step 3' },
-          { id: 'hiring', label: 'Hiring & ATS', icon: UserPlus, badge: '24' },
-          { id: 'helpdesk', label: 'Helpdesk & Requests', icon: LifeBuoy, badge: '6' },
+          { id: 'hiring', label: 'Hiring & ATS', icon: UserPlus, badge: `${openRequisitionsCount}` },
+          { id: 'helpdesk', label: 'Helpdesk & Requests', icon: LifeBuoy, badge: activeTicketsCount > 0 ? String(activeTicketsCount) : undefined },
         ],
       },
       {
@@ -114,10 +120,10 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
     >
       {/* Top Header / Logo */}
       <div className="h-14 flex items-center justify-between px-3.5 border-b border-[var(--border-subtle)] shrink-0">
-        <div className="flex items-center space-x-2.5 overflow-hidden">
+        <div className="flex items-center space-x-2.5">
           {/* Brand Mark - Orbit HR */}
           <div className="w-7 h-7 rounded-[5px] bg-[var(--brand-primary)] flex items-center justify-center text-white shrink-0 shadow-xs">
-            <span className="font-semibold text-[14px] tracking-tight">O</span>
+            <span className="font-bold text-[14px] tracking-tight">O</span>
           </div>
 
           {!collapsed && (
@@ -126,7 +132,7 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
                 Orbit HR
               </span>
               <span className="text-[11px] text-[var(--text-tertiary)] truncate leading-tight">
-                {role === 'employee' ? 'Self-Service (ESS)' : role === 'manager' ? 'Manager Portal' : 'Enterprise Admin'}
+                {role === 'employee' ? 'Self-Service (ESS)' : role === 'manager' ? 'Manager Portal' : 'Enterprise Suite'}
               </span>
             </div>
           )}
@@ -135,7 +141,7 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
         {/* Collapse button */}
         <button
           onClick={onToggleCollapse}
-          className="p-1 rounded-[4px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] transition-colors"
+          className="p-1 rounded-[4px] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
@@ -162,15 +168,15 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
                   onClick={() => onSelectNav(item.id)}
                   title={collapsed ? item.label : undefined}
                   className={cn(
-                    'w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded-[5px] text-[13px] font-medium transition-colors text-left relative group',
+                    'w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded-[5px] text-[13px] font-medium transition-colors text-left relative group cursor-pointer',
                     isActive
                       ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                       : 'text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] hover:text-[var(--text-primary)]'
                   )}
                 >
                   <Icon
-                    size={17}
-                    strokeWidth={1.7}
+                    size={16}
+                    strokeWidth={1.8}
                     className={cn(
                       'shrink-0 transition-colors',
                       isActive ? 'text-[var(--brand-primary)]' : 'text-[var(--text-tertiary)] group-hover:text-[var(--text-secondary)]'
@@ -181,7 +187,14 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
                     <div className="flex-1 flex items-center justify-between truncate">
                       <span className="truncate">{item.label}</span>
                       {item.badge && (
-                        <span className="text-[11px] font-mono text-[var(--text-tertiary)] tabular-nums">
+                        <span
+                          className={cn(
+                            'text-[10px] font-mono px-1.5 py-0.2 rounded-full tabular-nums',
+                            isActive
+                              ? 'bg-[var(--brand-subtle)] text-[var(--brand-primary)] font-semibold'
+                              : 'text-[var(--text-tertiary)] bg-[var(--bg-surface-subtle)]'
+                          )}
+                        >
                           {item.badge}
                         </span>
                       )}
@@ -207,11 +220,11 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav, r
           </div>
           {!collapsed && (
             <div className="truncate">
-              <div className="text-[12px] font-medium text-[var(--text-primary)] truncate leading-tight">
+              <div className="text-[12px] font-semibold text-[var(--text-primary)] truncate leading-tight">
                 Acme Financial Services
               </div>
               <div className="text-[10px] text-[var(--text-tertiary)] truncate leading-tight font-mono">
-                {role === 'employee' ? 'Ananya Iyer (EMP-10482)' : role === 'manager' ? 'Vikram Patel (VP Risk)' : 'Pooja Agarwal (Admin)'}
+                {role === 'employee' ? `${currentUser.name} (${currentUser.employeeCode})` : role === 'manager' ? 'Vikram Patel (VP Risk)' : 'Pooja Agarwal (Admin)'}
               </div>
             </div>
           )}

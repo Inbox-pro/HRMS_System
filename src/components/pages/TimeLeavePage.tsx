@@ -1,188 +1,15 @@
 import { useState } from 'react';
-import { Download, CheckCircle2, XCircle, Plus } from 'lucide-react';
+import { Download, CheckCircle2, XCircle, Plus, X } from 'lucide-react';
 import { useToast } from '../common/Toast';
+import { AttendanceCalendar } from '../common/AttendanceCalendar';
+import { useHrms } from '../../context/HrmsContext';
 import type { UserRole } from '../../types';
+import { cn } from '../../lib/utils';
 
 interface TimeLeavePageProps {
   onSelectEmployee: (empId: string) => void;
   role: UserRole;
 }
-
-interface BiometricPunch {
-  id: string;
-  empId: string;
-  empName: string;
-  empCode: string;
-  terminal: string;
-  inTime: string;
-  outTime: string;
-  workHours: string;
-  overtimeHours: string;
-  status: 'Present' | 'Late' | 'Half Day' | 'On Leave' | 'Missed Punch';
-  date?: string;
-}
-
-const PUNCH_LOGS: BiometricPunch[] = [
-  {
-    id: 'p-1',
-    empId: 'emp-10482',
-    empName: 'Ananya Iyer',
-    empCode: 'EMP-10482',
-    terminal: 'BKC HQ - Main Turnstile 02',
-    inTime: '09:12 AM',
-    outTime: '06:45 PM',
-    workHours: '9h 33m',
-    overtimeHours: '0h 33m',
-    status: 'Present',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-2',
-    empId: 'emp-10931',
-    empName: 'Rohan Mehta',
-    empCode: 'EMP-10931',
-    terminal: 'Nariman Pt - Terminal 01',
-    inTime: '08:58 AM',
-    outTime: '06:15 PM',
-    workHours: '9h 17m',
-    overtimeHours: '0h 17m',
-    status: 'Present',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-3',
-    empId: 'emp-10214',
-    empName: 'Vikram Patel',
-    empCode: 'EMP-10214',
-    terminal: 'Pune Hinjawadi - Gate A',
-    inTime: '09:05 AM',
-    outTime: '07:20 PM',
-    workHours: '10h 15m',
-    overtimeHours: '1h 15m',
-    status: 'Present',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-4',
-    empId: 'emp-11309',
-    empName: 'Amit Joshi',
-    empCode: 'EMP-11309',
-    terminal: 'Pune Kalyani - Bio 03',
-    inTime: '09:42 AM',
-    outTime: '06:30 PM',
-    workHours: '8h 48m',
-    overtimeHours: '0h 00m',
-    status: 'Late',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-5',
-    empId: 'emp-11048',
-    empName: 'Farah Sheikh',
-    empCode: 'EMP-11048',
-    terminal: 'BKC HQ - Fl 8 Turnstile A',
-    inTime: '09:02 AM',
-    outTime: '06:10 PM',
-    workHours: '9h 08m',
-    overtimeHours: '0h 08m',
-    status: 'Present',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-6',
-    empId: 'emp-10773',
-    empName: 'Priya Nambiar',
-    empCode: 'EMP-10773',
-    terminal: 'Bengaluru ORR - Reception',
-    inTime: '09:15 AM',
-    outTime: '06:20 PM',
-    workHours: '9h 05m',
-    overtimeHours: '0h 05m',
-    status: 'Present',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-7',
-    empId: 'emp-11512',
-    empName: 'Devendra Kothari',
-    empCode: 'EMP-11512',
-    terminal: 'Bengaluru ORR - Reception',
-    inTime: '10:14 AM',
-    outTime: '—',
-    workHours: 'Pending',
-    overtimeHours: '0h 00m',
-    status: 'Late',
-    date: '23 Nov 2026',
-  },
-  {
-    id: 'p-8',
-    empId: 'emp-11620',
-    empName: 'Sanjay Deshpande',
-    empCode: 'EMP-11620',
-    terminal: 'BKC HQ - Main Turnstile 01',
-    inTime: '—',
-    outTime: '—',
-    workHours: '0h 00m',
-    overtimeHours: '0h 00m',
-    status: 'Missed Punch',
-    date: '23 Nov 2026',
-  },
-];
-
-const ANANYA_PUNCH_HISTORY: BiometricPunch[] = [
-  {
-    id: 'ap-1',
-    empId: 'emp-10482',
-    empName: 'Ananya Iyer',
-    empCode: 'EMP-10482',
-    terminal: 'BKC HQ - Turnstile 02',
-    inTime: '09:12 AM',
-    outTime: '06:45 PM',
-    workHours: '9h 33m',
-    overtimeHours: '0h 33m',
-    status: 'Present',
-    date: '23 Nov 2026 (Today)',
-  },
-  {
-    id: 'ap-2',
-    empId: 'emp-10482',
-    empName: 'Ananya Iyer',
-    empCode: 'EMP-10482',
-    terminal: 'BKC HQ - Turnstile 02',
-    inTime: '09:05 AM',
-    outTime: '06:30 PM',
-    workHours: '9h 25m',
-    overtimeHours: '0h 25m',
-    status: 'Present',
-    date: '22 Nov 2026 (Sun On-call)',
-  },
-  {
-    id: 'ap-3',
-    empId: 'emp-10482',
-    empName: 'Ananya Iyer',
-    empCode: 'EMP-10482',
-    terminal: 'BKC HQ - Turnstile 01',
-    inTime: '09:18 AM',
-    outTime: '07:10 PM',
-    workHours: '9h 52m',
-    overtimeHours: '0h 52m',
-    status: 'Present',
-    date: '20 Nov 2026 (Fri)',
-  },
-  {
-    id: 'ap-4',
-    empId: 'emp-10482',
-    empName: 'Ananya Iyer',
-    empCode: 'EMP-10482',
-    terminal: 'BKC HQ - Turnstile 02',
-    inTime: '09:08 AM',
-    outTime: '06:20 PM',
-    workHours: '9h 12m',
-    overtimeHours: '0h 12m',
-    status: 'Present',
-    date: '19 Nov 2026 (Thu)',
-  },
-];
 
 interface RegularizationRequest {
   id: string;
@@ -219,7 +46,7 @@ const INITIAL_REGULARIZATIONS: RegularizationRequest[] = [
     punchType: 'In Punch',
     originalTime: '09:42 AM',
     requestedTime: '09:00 AM',
-    reason: 'Client technical discussion on-site at HDFC Bank IT Park, Hinjawadi Phase 1 before coming to office.',
+    reason: 'Client technical discussion on-site at HDFC Bank IT Park before coming to office.',
     status: 'Pending',
   },
   {
@@ -236,17 +63,7 @@ const INITIAL_REGULARIZATIONS: RegularizationRequest[] = [
   },
 ];
 
-interface ShiftRoster {
-  id: string;
-  shiftName: string;
-  timings: string;
-  headcount: number;
-  coverage: string;
-  leadSupervisor: string;
-  activeStatus: string;
-}
-
-const SHIFT_ROSTER: ShiftRoster[] = [
+const SHIFT_ROSTER = [
   {
     id: 's-1',
     shiftName: 'Capital Markets Desk Shift',
@@ -287,12 +104,21 @@ const SHIFT_ROSTER: ShiftRoster[] = [
 
 export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
   const { showToast } = useToast();
+  const { punches, currentUser, applyLeave } = useHrms();
+
   const [activeTab, setActiveTab] = useState<string>(
-    role === 'employee' ? 'my_punches' : role === 'manager' ? 'regularizations' : 'punches'
+    role === 'employee' ? 'my_calendar' : role === 'manager' ? 'regularizations' : 'punches'
   );
   const [regularizations, setRegularizations] = useState<RegularizationRequest[]>(INITIAL_REGULARIZATIONS);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
-  const [leaveType, setLeaveType] = useState('Earned Leave (EL)');
+
+  // Form states
+  const [leaveType, setLeaveType] = useState<'casual' | 'sick' | 'earned'>('earned');
+  const [fromDate, setFromDate] = useState('2026-12-02');
+  const [toDate, setToDate] = useState('2026-12-04');
+  const [reason, setReason] = useState('');
+
+  const currentBalances = currentUser.leaveBalance || { casual: 4.5, earned: 12.0, sick: 6.0 };
 
   const handleApproveReg = (id: string, empName: string) => {
     setRegularizations((prev) =>
@@ -314,12 +140,64 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
     });
   };
 
-  const handleApplyLeaveSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsApplyModalOpen(false);
+  const handleExportBiometricCSV = () => {
+    const headers = ['Punch ID', 'Employee Code', 'Employee Name', 'Terminal', 'Date', 'In Time', 'Out Time', 'Duration', 'Status'];
+    const rows = punches.map((p) => [
+      `"${p.id}"`,
+      `"${p.empCode}"`,
+      `"${p.empName}"`,
+      `"${p.terminal}"`,
+      `"${p.date}"`,
+      `"${p.inTime}"`,
+      `"${p.outTime}"`,
+      `"${p.workHours}"`,
+      `"${p.status}"`,
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `acme_biometric_punches_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
     showToast({
       type: 'success',
-      message: `Leave application for ${leaveType} submitted to Vikramaditya Singhania.`,
+      message: `Exported ${punches.length} biometric punch logs to CSV.`,
+    });
+  };
+
+  const handleApplyLeaveSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Calculate approximate days
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+    const diffTime = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1);
+
+    if (diffTime > currentBalances[leaveType]) {
+      showToast({
+        type: 'warning',
+        message: `Insufficient ${leaveType.toUpperCase()} leave balance. Requested: ${diffTime} days, Available: ${currentBalances[leaveType]} days.`,
+      });
+      return;
+    }
+
+    applyLeave({
+      leaveType,
+      startDate: fromDate,
+      endDate: toDate,
+      days: diffTime,
+      reason: reason || 'Personal / Planned leave',
+    });
+
+    setIsApplyModalOpen(false);
+    setReason('');
+    showToast({
+      type: 'success',
+      message: `Applied for ${diffTime} days ${leaveType.toUpperCase()} leave. Routed for approval.`,
     });
   };
 
@@ -333,14 +211,14 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
               ? 'My Time & Attendance'
               : role === 'manager'
               ? 'Team Attendance & Shift Schedule'
-              : 'Time & Leave Management'}
+              : 'Time & Leave Operations'}
           </h2>
           <p className="text-[12px] text-[var(--text-tertiary)]">
             {role === 'employee'
-              ? 'Ananya Iyer (EMP-10482) • Biometric terminal logs & leave balance ledger'
+              ? `${currentUser.name} (${currentUser.employeeCode}) • Live biometric logs & reconciled leave balances`
               : role === 'manager'
               ? 'Risk & Quantitative Desk (18 members) • Attendance verification & regularizations'
-              : 'Biometric sync (eSSL / Matrix COSEC) • 4 hubs • Shift rostering & statutory leave'}
+              : 'Biometric gateway active • BKC HQ, Nariman Pt, Hinjawadi & ORR Hubs'}
           </p>
         </div>
 
@@ -348,18 +226,18 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
           {role === 'employee' ? (
             <button
               onClick={() => setIsApplyModalOpen(true)}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-[12px] font-medium text-white bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] rounded-[5px] transition-colors"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-[12px] font-semibold text-white bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] rounded-[6px] shadow-xs transition-colors cursor-pointer"
             >
-              <Plus size={13} strokeWidth={1.7} />
-              <span>Apply for leave</span>
+              <Plus size={14} strokeWidth={2} />
+              <span>Apply for Leave</span>
             </button>
           ) : (
             <button
-              onClick={() => showToast({ type: 'info', message: 'Exporting raw biometric punch logs (.csv)' })}
-              className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 text-[12px] font-medium text-[var(--text-secondary)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:bg-[var(--bg-surface-subtle)] rounded-[5px] transition-colors"
+              onClick={handleExportBiometricCSV}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-[12px] font-medium text-[var(--text-primary)] bg-[var(--bg-surface)] border border-[var(--border-default)] hover:bg-[var(--bg-surface-subtle)] rounded-[6px] shadow-xs transition-colors cursor-pointer"
             >
-              <Download size={13} strokeWidth={1.7} />
-              <span>Biometric dump</span>
+              <Download size={14} strokeWidth={1.8} />
+              <span>Export Biometric CSV</span>
             </button>
           )}
         </div>
@@ -369,66 +247,68 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
       {role === 'employee' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">My monthly attendance</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">My Monthly Attendance</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--text-primary)] tabular-nums">
               96.8%
             </div>
-            <span className="text-[11px] text-[var(--success-text)] font-medium">21 / 22 working days</span>
+            <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">21 / 22 working days</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Leave balance</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--brand-primary)] tabular-nums">
-              14.5 Days
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Total Leave Balance</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--brand-primary)] tabular-nums">
+              {(currentBalances.casual + currentBalances.earned + currentBalances.sick).toFixed(1)} Days
             </div>
-            <span className="text-[11px] text-[var(--text-secondary)]">PL: 8.0, CL: 4.5, SL: 2.0</span>
+            <span className="text-[11px] text-[var(--text-secondary)]">
+              EL: {currentBalances.earned}, CL: {currentBalances.casual}, SL: {currentBalances.sick}
+            </span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Average in-punch time</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Average In-Punch Time</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--text-primary)] tabular-nums font-mono">
               09:12 AM
             </div>
-            <span className="text-[11px] text-[var(--text-tertiary)]">Grace cutoff: 09:30 AM</span>
+            <span className="text-[11px] text-[var(--text-tertiary)]">Cutoff grace: 09:30 AM</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Comp-off earned</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
-              2.0 Days
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Approved Remote / WFH</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--text-primary)] tabular-nums">
+              3 Days
             </div>
-            <span className="text-[11px] text-[var(--text-tertiary)]">Valid for 60 days</span>
+            <span className="text-[11px] text-[var(--text-tertiary)]">This calendar month</span>
           </div>
         </div>
       ) : role === 'manager' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Team present today</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--success-text)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Team Present Today</span>
+            <div className="mt-1 text-[22px] font-bold text-emerald-700 dark:text-emerald-400 tabular-nums">
               17 / 18
             </div>
             <span className="text-[11px] text-[var(--text-secondary)]">94.4% active at desk</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Pending regularizations</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--warning-text)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Pending Regularizations</span>
+            <div className="mt-1 text-[22px] font-bold text-amber-600 tabular-nums">
               {regularizations.filter((r) => r.status === 'Pending').length}
             </div>
-            <span className="text-[11px] text-[var(--text-tertiary)]">Requires your review</span>
+            <span className="text-[11px] text-[var(--text-tertiary)]">Requires manager sign-off</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">On approved leave</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">On Approved Leave</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--text-primary)] tabular-nums">
               1 Member
             </div>
             <span className="text-[11px] text-[var(--text-tertiary)]">Devendra Kothari (Paternity)</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Team shift coverage</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--brand-primary)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Shift Coverage</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--brand-primary)] tabular-nums">
               100%
             </div>
             <span className="text-[11px] text-[var(--text-tertiary)]">Peak trading staffed</span>
@@ -437,35 +317,35 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Biometric present</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
-              1,182
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Biometric Attendance</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--text-primary)] tabular-nums">
+              1,192 / 1,284
             </div>
-            <span className="text-[11px] text-[var(--success-text)] font-medium">92.1% at physical offices</span>
+            <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">92.8% workforce active</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Pending regularizations</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--warning-text)] tabular-nums">
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Pending Regularizations</span>
+            <div className="mt-1 text-[22px] font-bold text-amber-600 tabular-nums">
               {regularizations.filter((r) => r.status === 'Pending').length}
             </div>
-            <span className="text-[11px] text-[var(--text-secondary)]">Requires manager sign-off</span>
+            <span className="text-[11px] text-[var(--text-secondary)]">Requires supervisor sign-off</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">On approved leave</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--brand-primary)] tabular-nums">
-              54
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">On Approved Leave</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--brand-primary)] tabular-nums">
+              48 Members
             </div>
-            <span className="text-[11px] text-[var(--text-tertiary)]">38 Earned, 16 Sick/Casual</span>
+            <span className="text-[11px] text-[var(--text-tertiary)]">32 Earned, 16 Sick/Casual</span>
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Late punches today</span>
-            <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
-              28
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Remote Work (WFH)</span>
+            <div className="mt-1 text-[22px] font-bold text-[var(--text-primary)] tabular-nums">
+              44 Members
             </div>
-            <span className="text-[11px] text-[var(--text-tertiary)]">Within 15-min grace window</span>
+            <span className="text-[11px] text-[var(--text-tertiary)]">Pre-approved VPN active</span>
           </div>
         </div>
       )}
@@ -475,157 +355,179 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
         {role === 'employee' ? (
           <>
             <button
-              onClick={() => setActiveTab('my_punches')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
-                activeTab === 'my_punches'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+              onClick={() => setActiveTab('my_calendar')}
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
+                activeTab === 'my_calendar'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              My punch history (November 2026)
+              Attendance Calendar
+            </button>
+            <button
+              onClick={() => setActiveTab('my_punches')}
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
+                activeTab === 'my_punches'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
+                  : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
+              )}
+            >
+              My Punch Logs Table
             </button>
             <button
               onClick={() => setActiveTab('balances')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'balances'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              My leave balances & policy
+              My Leave Balances & Policy
             </button>
             <button
               onClick={() => setActiveTab('holidays')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'holidays'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              Maharashtra holiday calendar
+              Maharashtra Holiday Calendar
             </button>
           </>
         ) : (
           <>
             <button
               onClick={() => setActiveTab('punches')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'punches'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              {role === 'manager' ? 'Team biometric punch stream' : 'Live biometric punch stream'}
+              {role === 'manager' ? 'Team Biometric Punch Stream' : 'Live Biometric Punch Stream'}
             </button>
             <button
               onClick={() => setActiveTab('regularizations')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'regularizations'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              Attendance regularizations ({regularizations.filter((r) => r.status === 'Pending').length})
+              Attendance Regularizations ({regularizations.filter((r) => r.status === 'Pending').length})
             </button>
             <button
               onClick={() => setActiveTab('roster')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'roster'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              Shift rostering
+              Shift Rostering
             </button>
             <button
               onClick={() => setActiveTab('balances')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'balances'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              Leave balances ledger
+              Leave Balances Ledger
             </button>
             <button
               onClick={() => setActiveTab('holidays')}
-              className={`px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors ${
+              className={cn(
+                'px-3 py-1 rounded-[5px] font-medium whitespace-nowrap transition-colors cursor-pointer',
                 activeTab === 'holidays'
-                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] font-semibold'
+                  ? 'bg-[var(--bg-surface-subtle)] text-[var(--brand-primary)] font-semibold'
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-              }`}
+              )}
             >
-              Holiday calendar
+              Holiday Calendar
             </button>
           </>
         )}
       </div>
 
-      {/* ============================================================== */}
+      {/* 0. EMPLOYEE MONTHLY ATTENDANCE CALENDAR */}
+      {activeTab === 'my_calendar' && (
+        <AttendanceCalendar onApplyLeave={() => setIsApplyModalOpen(true)} />
+      )}
+
       {/* 1. EMPLOYEE PERSONAL PUNCH HISTORY */}
-      {/* ============================================================== */}
       {activeTab === 'my_punches' && (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-[12px]">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-secondary)]">
+                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
                   <th className="py-2.5 px-4 font-medium">Date</th>
                   <th className="py-2.5 px-4 font-medium">Terminal / Reader</th>
-                  <th className="py-2.5 px-4 font-medium">In punch</th>
-                  <th className="py-2.5 px-4 font-medium">Out punch</th>
-                  <th className="py-2.5 px-4 font-medium">Total hours</th>
+                  <th className="py-2.5 px-4 font-medium">In Punch</th>
+                  <th className="py-2.5 px-4 font-medium">Out Punch</th>
+                  <th className="py-2.5 px-4 font-medium">Total Hours</th>
                   <th className="py-2.5 px-4 font-medium">Overtime</th>
                   <th className="py-2.5 px-4 font-medium text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-subtle)]">
-                {ANANYA_PUNCH_HISTORY.map((punch) => (
-                  <tr key={punch.id} className="hover:bg-[var(--bg-surface-subtle)] transition-colors">
-                    <td className="py-2.5 px-4 font-medium text-[var(--text-primary)]">{punch.date}</td>
-                    <td className="py-2.5 px-4 text-[var(--text-secondary)]">{punch.terminal}</td>
-                    <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{punch.inTime}</td>
-                    <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{punch.outTime}</td>
-                    <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{punch.workHours}</td>
-                    <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-tertiary)]">{punch.overtimeHours}</td>
-                    <td className="py-2.5 px-4 text-right">
-                      <span className="text-[11px] font-medium text-[var(--success-text)]">
-                        {punch.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                {punches
+                  .filter((p) => p.empId === currentUser.id)
+                  .map((punch) => (
+                    <tr key={punch.id} className="hover:bg-[var(--bg-surface-hover)] transition-colors">
+                      <td className="py-2.5 px-4 font-medium text-[var(--text-primary)]">{punch.date}</td>
+                      <td className="py-2.5 px-4 text-[var(--text-secondary)]">{punch.terminal}</td>
+                      <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{punch.inTime}</td>
+                      <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{punch.outTime}</td>
+                      <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{punch.workHours}</td>
+                      <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-tertiary)]">{punch.overtimeHours}</td>
+                      <td className="py-2.5 px-4 text-right">
+                        <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                          {punch.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* 2. BIOMETRIC PUNCH STREAM (Manager / Admin) */}
-      {/* ============================================================== */}
+      {/* 2. BIOMETRIC PUNCH STREAM */}
       {activeTab === 'punches' && (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-[12px]">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-secondary)]">
+                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
                   <th className="py-2.5 px-4 font-medium">Employee</th>
                   <th className="py-2.5 px-4 font-medium">Terminal / Reader</th>
-                  <th className="py-2.5 px-4 font-medium">In punch</th>
-                  <th className="py-2.5 px-4 font-medium">Out punch</th>
-                  <th className="py-2.5 px-4 font-medium">Total hours</th>
+                  <th className="py-2.5 px-4 font-medium">In Punch</th>
+                  <th className="py-2.5 px-4 font-medium">Out Punch</th>
+                  <th className="py-2.5 px-4 font-medium">Total Hours</th>
                   <th className="py-2.5 px-4 font-medium">Overtime</th>
                   <th className="py-2.5 px-4 font-medium text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-subtle)]">
-                {PUNCH_LOGS.map((punch) => (
-                  <tr key={punch.id} className="hover:bg-[var(--bg-surface-subtle)] transition-colors">
+                {punches.map((punch) => (
+                  <tr key={punch.id} className="hover:bg-[var(--bg-surface-hover)] transition-colors">
                     <td className="py-2.5 px-4">
                       <button
                         onClick={() => onSelectEmployee(punch.empId)}
-                        className="font-medium text-[var(--text-primary)] hover:underline block text-left"
+                        className="font-semibold text-[var(--text-primary)] hover:text-[var(--brand-primary)] hover:underline block text-left cursor-pointer"
                       >
                         {punch.empName}
                       </button>
@@ -638,13 +540,14 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
                     <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-tertiary)]">{punch.overtimeHours}</td>
                     <td className="py-2.5 px-4 text-right">
                       <span
-                        className={`text-[11px] font-medium ${
+                        className={cn(
+                          'text-[11px] font-semibold',
                           punch.status === 'Present'
-                            ? 'text-[var(--success-text)]'
+                            ? 'text-emerald-700 dark:text-emerald-400'
                             : punch.status === 'Late'
-                            ? 'text-[var(--warning-text)]'
-                            : 'text-[var(--danger-text)]'
-                        }`}
+                            ? 'text-amber-600'
+                            : 'text-rose-600'
+                        )}
                       >
                         {punch.status}
                       </span>
@@ -657,27 +560,25 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* 3. ATTENDANCE REGULARIZATIONS */}
-      {/* ============================================================== */}
       {activeTab === 'regularizations' && (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-[12px]">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-secondary)]">
+                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
                   <th className="py-2.5 px-4 font-medium">Employee</th>
                   <th className="py-2.5 px-4 font-medium">Date</th>
-                  <th className="py-2.5 px-4 font-medium">Punch type</th>
+                  <th className="py-2.5 px-4 font-medium">Punch Type</th>
                   <th className="py-2.5 px-4 font-medium">Logged vs Requested</th>
-                  <th className="py-2.5 px-4 font-medium">Reason for correction</th>
+                  <th className="py-2.5 px-4 font-medium">Reason for Correction</th>
                   <th className="py-2.5 px-4 font-medium">Status</th>
                   <th className="py-2.5 px-4 font-medium text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-subtle)]">
                 {regularizations.map((reg) => (
-                  <tr key={reg.id} className="hover:bg-[var(--bg-surface-subtle)] transition-colors">
+                  <tr key={reg.id} className="hover:bg-[var(--bg-surface-hover)] transition-colors">
                     <td className="py-2.5 px-4">
                       <div className="font-semibold text-[var(--text-primary)]">{reg.empName}</div>
                       <div className="text-[11px] font-mono text-[var(--text-tertiary)]">{reg.empCode}</div>
@@ -685,22 +586,23 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
                     <td className="py-2.5 px-4 font-mono text-[var(--text-primary)]">{reg.date}</td>
                     <td className="py-2.5 px-4 text-[var(--text-secondary)]">{reg.punchType}</td>
                     <td className="py-2.5 px-4 font-mono text-[11px]">
-                      <span className="text-[var(--danger-text)]">{reg.originalTime}</span>
+                      <span className="text-[var(--danger)]">{reg.originalTime}</span>
                       <span className="text-[var(--text-tertiary)]"> → </span>
-                      <span className="text-[var(--success-text)] font-semibold">{reg.requestedTime}</span>
+                      <span className="text-emerald-700 font-semibold">{reg.requestedTime}</span>
                     </td>
                     <td className="py-2.5 px-4 max-w-sm text-[var(--text-secondary)] text-[11px]">
                       {reg.reason}
                     </td>
                     <td className="py-2.5 px-4">
                       <span
-                        className={`text-[11px] font-medium ${
+                        className={cn(
+                          'text-[11px] font-semibold',
                           reg.status === 'Approved'
-                            ? 'text-[var(--success-text)]'
+                            ? 'text-emerald-700'
                             : reg.status === 'Rejected'
-                            ? 'text-[var(--danger-text)]'
-                            : 'text-[var(--warning-text)]'
-                        }`}
+                            ? 'text-[var(--danger)]'
+                            : 'text-amber-600'
+                        )}
                       >
                         {reg.status}
                       </span>
@@ -710,21 +612,21 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
                         <div className="flex items-center justify-end space-x-2">
                           <button
                             onClick={() => handleApproveReg(reg.id, reg.empName)}
-                            className="text-[11px] font-medium text-[var(--brand-primary)] hover:underline flex items-center space-x-0.5"
+                            className="text-[11px] font-semibold text-[var(--brand-primary)] hover:underline flex items-center space-x-0.5 cursor-pointer"
                           >
-                            <CheckCircle2 size={12} />
+                            <CheckCircle2 size={13} />
                             <span>Approve</span>
                           </button>
                           <button
                             onClick={() => handleRejectReg(reg.id, reg.empName)}
-                            className="text-[11px] font-medium text-[var(--danger-text)] hover:underline flex items-center space-x-0.5"
+                            className="text-[11px] font-semibold text-[var(--danger)] hover:underline flex items-center space-x-0.5 cursor-pointer"
                           >
-                            <XCircle size={12} />
+                            <XCircle size={13} />
                             <span>Reject</span>
                           </button>
                         </div>
                       ) : (
-                        <span className="text-[11px] text-[var(--text-tertiary)]">Completed</span>
+                        <span className="text-[11px] text-[var(--text-tertiary)]">Resolved</span>
                       )}
                     </td>
                   </tr>
@@ -735,34 +637,32 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* 4. SHIFT ROSTERING */}
-      {/* ============================================================== */}
       {activeTab === 'roster' && (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-[12px]">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-secondary)]">
-                  <th className="py-2.5 px-4 font-medium">Shift nomenclature</th>
-                  <th className="py-2.5 px-4 font-medium">Shift timings (IST)</th>
+                <tr className="border-b border-[var(--border-subtle)] bg-[var(--bg-surface-subtle)] text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
+                  <th className="py-2.5 px-4 font-medium">Shift Nomenclature</th>
+                  <th className="py-2.5 px-4 font-medium">Timings (IST)</th>
                   <th className="py-2.5 px-4 font-medium text-right">Headcount</th>
-                  <th className="py-2.5 px-4 font-medium">Operations coverage</th>
-                  <th className="py-2.5 px-4 font-medium">Lead supervisor</th>
+                  <th className="py-2.5 px-4 font-medium">Coverage</th>
+                  <th className="py-2.5 px-4 font-medium">Lead Supervisor</th>
                   <th className="py-2.5 px-4 font-medium text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-subtle)]">
                 {SHIFT_ROSTER.map((s) => (
-                  <tr key={s.id} className="hover:bg-[var(--bg-surface-subtle)] transition-colors">
+                  <tr key={s.id} className="hover:bg-[var(--bg-surface-hover)] transition-colors">
                     <td className="py-2.5 px-4 font-semibold text-[var(--text-primary)]">{s.shiftName}</td>
                     <td className="py-2.5 px-4 font-mono tabular-nums text-[var(--text-primary)]">{s.timings}</td>
-                    <td className="py-2.5 px-4 text-right font-mono tabular-nums text-[var(--brand-primary)] font-medium">
+                    <td className="py-2.5 px-4 text-right font-mono tabular-nums text-[var(--brand-primary)] font-semibold">
                       {s.headcount} employees
                     </td>
                     <td className="py-2.5 px-4 text-[var(--text-secondary)]">{s.coverage}</td>
                     <td className="py-2.5 px-4 text-[var(--text-secondary)]">{s.leadSupervisor}</td>
-                    <td className="py-2.5 px-4 text-right text-[11px] text-[var(--text-secondary)] font-medium">
+                    <td className="py-2.5 px-4 text-right text-[11px] text-emerald-700 font-medium">
                       {s.activeStatus}
                     </td>
                   </tr>
@@ -773,68 +673,64 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* 5. LEAVE BALANCES LEDGER */}
-      {/* ============================================================== */}
       {activeTab === 'balances' && (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 space-y-3">
-          <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-4 shadow-xs">
+          <h3 className="text-[14px] font-semibold text-[var(--text-primary)]">
             {role === 'employee' ? 'My Leave Entitlement & Rules (FY 2026-27)' : 'Annual Leave Accrual & Encashment Rules (FY 2026-27)'}
           </h3>
-          <div className="space-y-2 text-[12px]">
-            <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex justify-between items-center">
+          <div className="space-y-3 text-[12px]">
+            <div className="p-3.5 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg flex justify-between items-center">
               <div>
                 <span className="font-semibold text-[var(--text-primary)]">Paid Privilege Leave (PL / EL)</span>
-                <p className="text-[11px] text-[var(--text-tertiary)]">Accrues 1.75 days per month (21 days annual). Max 45 days accumulation. Encashable upon separation.</p>
+                <p className="text-[11px] text-[var(--text-tertiary)] mt-0.5">Accrues 1.75 days per month (21 days annual). Max 45 days accumulation. Encashable upon separation.</p>
               </div>
-              <span className="font-mono text-[var(--brand-primary)] font-semibold">
-                {role === 'employee' ? '8.0 days available' : '21 days / yr'}
+              <span className="font-mono text-[var(--brand-primary)] font-bold text-[14px]">
+                {role === 'employee' ? `${currentBalances.earned} days available` : '21 days / yr'}
               </span>
             </div>
-            <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex justify-between items-center">
+            <div className="p-3.5 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg flex justify-between items-center">
               <div>
                 <span className="font-semibold text-[var(--text-primary)]">Casual & Sick Leave (CL / SL)</span>
-                <p className="text-[11px] text-[var(--text-tertiary)]">7 Casual + 7 Sick days. Lapses on 31 December. Non-encashable.</p>
+                <p className="text-[11px] text-[var(--text-tertiary)] mt-0.5">7 Casual + 7 Sick days. Lapses on 31 December. Non-encashable.</p>
               </div>
-              <span className="font-mono text-[var(--text-primary)] font-semibold">
-                {role === 'employee' ? '6.5 days available' : '14 days / yr'}
+              <span className="font-mono text-[var(--text-primary)] font-bold text-[14px]">
+                {role === 'employee' ? `${currentBalances.casual + currentBalances.sick} days available` : '14 days / yr'}
               </span>
             </div>
-            <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex justify-between items-center">
+            <div className="p-3.5 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg flex justify-between items-center">
               <div>
                 <span className="font-semibold text-[var(--text-primary)]">Compensatory Off (Comp Off)</span>
-                <p className="text-[11px] text-[var(--text-tertiary)]">For weekend BSE/NSE mock trading sessions or emergency DR drills. Valid for 60 days from accrual.</p>
+                <p className="text-[11px] text-[var(--text-tertiary)] mt-0.5">For weekend BSE/NSE mock trading sessions or emergency DR drills. Valid for 60 days from accrual.</p>
               </div>
-              <span className="font-mono text-[var(--text-primary)] font-semibold">
-                {role === 'employee' ? '2.0 days available' : 'As earned'}
+              <span className="font-mono text-[var(--text-primary)] font-bold text-[14px]">
+                2.0 days available
               </span>
             </div>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* 6. STATUTORY HOLIDAY CALENDAR */}
-      {/* ============================================================== */}
       {activeTab === 'holidays' && (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 space-y-3">
-          <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
-            State of Maharashtra & RBI Negotiable Instruments Act Holidays (2026)
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-4 shadow-xs">
+          <h3 className="text-[14px] font-semibold text-[var(--text-primary)]">
+            State of Maharashtra & RBI Negotiable Instruments Act Holidays (2026-27)
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-[12px]">
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded">
-              <span className="font-mono text-[11px] text-[var(--brand-primary)]">25 Dec 2026 (Friday)</span>
-              <div className="font-semibold text-[var(--text-primary)]">Christmas Day</div>
+            <div className="p-3 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg">
+              <span className="font-mono text-[11px] text-[var(--brand-primary)] font-semibold">25 Dec 2026 (Friday)</span>
+              <div className="font-semibold text-[var(--text-primary)] mt-1">Christmas Day</div>
               <span className="text-[11px] text-[var(--text-tertiary)]">Mandatory Public Holiday</span>
             </div>
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded">
-              <span className="font-mono text-[11px] text-[var(--brand-primary)]">26 Jan 2027 (Tuesday)</span>
-              <div className="font-semibold text-[var(--text-primary)]">Republic Day</div>
+            <div className="p-3 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg">
+              <span className="font-mono text-[11px] text-[var(--brand-primary)] font-semibold">26 Jan 2027 (Tuesday)</span>
+              <div className="font-semibold text-[var(--text-primary)] mt-1">Republic Day</div>
               <span className="text-[11px] text-[var(--text-tertiary)]">National Holiday</span>
             </div>
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded">
-              <span className="font-mono text-[11px] text-[var(--brand-primary)]">03 Mar 2027 (Wednesday)</span>
-              <div className="font-semibold text-[var(--text-primary)]">Holi (Rangapanchami)</div>
+            <div className="p-3 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg">
+              <span className="font-mono text-[11px] text-[var(--brand-primary)] font-semibold">03 Mar 2027 (Wednesday)</span>
+              <div className="font-semibold text-[var(--text-primary)] mt-1">Holi (Rangapanchami)</div>
               <span className="text-[11px] text-[var(--text-tertiary)]">State of Maharashtra Holiday</span>
             </div>
           </div>
@@ -843,43 +739,86 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
 
       {/* Apply Leave Modal */}
       {isApplyModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-xl max-w-md w-full p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2">
-              <h3 className="text-[14px] font-semibold text-[var(--text-primary)]">Apply for Leave</h3>
-              <button onClick={() => setIsApplyModalOpen(false)} className="text-[var(--text-tertiary)] hover:text-[var(--text-primary)]">✕</button>
-            </div>
-            <form onSubmit={handleApplyLeaveSubmit} className="space-y-3 text-[12px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
+          <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in-50 zoom-in-95 duration-150">
+            <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--bg-surface-subtle)]">
               <div>
-                <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">Leave type</label>
+                <h3 className="text-[15px] font-semibold text-[var(--text-primary)]">Apply for Planned Leave</h3>
+                <p className="text-[11px] text-[var(--text-tertiary)]">
+                  Approving Manager: {currentUser.reportingManager}
+                </p>
+              </div>
+              <button
+                onClick={() => setIsApplyModalOpen(false)}
+                className="p-1 rounded text-[var(--text-tertiary)] hover:text-[var(--text-primary)]"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <form onSubmit={handleApplyLeaveSubmit} className="p-5 space-y-4 text-[12px]">
+              <div>
+                <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">Leave Category</label>
                 <select
                   value={leaveType}
-                  onChange={(e) => setLeaveType(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded-[5px] text-[var(--text-primary)]"
+                  onChange={(e) => setLeaveType(e.target.value as any)}
+                  className="w-full px-2.5 py-1.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-[6px] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                 >
-                  <option value="Earned Leave (EL)">Earned Leave (EL) — 8.0 days balance</option>
-                  <option value="Casual Leave (CL)">Casual Leave (CL) — 4.5 days balance</option>
-                  <option value="Sick Leave (SL)">Sick Leave (SL) — 2.0 days balance</option>
-                  <option value="Compensatory Off">Compensatory Off — 2.0 days balance</option>
+                  <option value="earned">Earned / Privilege Leave (EL) — {currentBalances.earned} days balance</option>
+                  <option value="casual">Casual Leave (CL) — {currentBalances.casual} days balance</option>
+                  <option value="sick">Sick Leave (SL) — {currentBalances.sick} days balance</option>
                 </select>
               </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">From</label>
-                  <input type="date" required defaultValue="2026-12-02" className="w-full px-2.5 py-1.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded-[5px] text-[var(--text-primary)] font-mono" />
+                  <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">From Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={fromDate}
+                    onChange={(e) => setFromDate(e.target.value)}
+                    className="w-full px-2.5 py-1.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-[6px] text-[var(--text-primary)] font-mono focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                  />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">To</label>
-                  <input type="date" required defaultValue="2026-12-06" className="w-full px-2.5 py-1.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded-[5px] text-[var(--text-primary)] font-mono" />
+                  <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">To Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={toDate}
+                    onChange={(e) => setToDate(e.target.value)}
+                    className="w-full px-2.5 py-1.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-[6px] text-[var(--text-primary)] font-mono focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                  />
                 </div>
               </div>
+
               <div>
-                <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">Reason</label>
-                <textarea rows={3} required placeholder="State reason and handover colleague..." className="w-full px-2.5 py-1.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded-[5px] text-[var(--text-primary)] placeholder-[var(--text-tertiary)]" />
+                <label className="block text-[11px] font-medium text-[var(--text-secondary)] mb-1">Reason & Work Handover Colleague *</label>
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="Detail justification and who is covering urgent desk items..."
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  className="w-full px-2.5 py-1.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-[6px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                />
               </div>
-              <div className="flex justify-end space-x-2 pt-2 border-t border-[var(--border-subtle)]">
-                <button type="button" onClick={() => setIsApplyModalOpen(false)} className="px-3 py-1.5 text-[12px] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] rounded-[5px]">Cancel</button>
-                <button type="submit" className="px-3 py-1.5 text-[12px] font-medium text-white bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] rounded-[5px]">Submit application</button>
+
+              <div className="p-4 border-t border-[var(--border-subtle)] flex items-center justify-end space-x-2.5 pt-3 -mx-5 -mb-5 bg-[var(--bg-surface-subtle)]">
+                <button
+                  type="button"
+                  onClick={() => setIsApplyModalOpen(false)}
+                  className="px-3 py-1.5 text-[12px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 text-[12px] font-semibold text-white bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] rounded-[6px] shadow-xs cursor-pointer"
+                >
+                  Submit Application
+                </button>
               </div>
             </form>
           </div>

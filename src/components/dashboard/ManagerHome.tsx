@@ -1,99 +1,38 @@
-import { useState } from 'react';
-import {
-  CheckCircle2,
-  XCircle,
-} from 'lucide-react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import { useToast } from '../common/Toast';
+import { useHrms } from '../../context/HrmsContext';
+import { cn } from '../../lib/utils';
 
 interface ManagerHomeProps {
   onOpenDrawer: (empId: string) => void;
 }
 
-interface TeamApproval {
-  id: string;
-  type: 'Leave' | 'Expense' | 'Shift Regularization';
-  employeeName: string;
-  employeeCode: string;
-  empId: string;
-  title: string;
-  detail: string;
-  amountOrDays: string;
-  submittedAt: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
-}
-
-const INITIAL_TEAM_APPROVALS: TeamApproval[] = [
-  {
-    id: 't-app-1',
-    type: 'Leave',
-    employeeName: 'Ananya Iyer',
-    employeeCode: 'EMP-10482',
-    empId: 'emp-10482',
-    title: 'Earned Leave (EL) — 5 Days',
-    detail: '02 Dec – 06 Dec 2026. Handover with Rohan Mehta for institutional research coverage.',
-    amountOrDays: '5 days',
-    submittedAt: 'Today, 09:40 AM',
-    status: 'Pending',
-  },
-  {
-    id: 't-app-2',
-    type: 'Expense',
-    employeeName: 'Rohan Mehta',
-    employeeCode: 'EMP-10931',
-    empId: 'emp-10931',
-    title: 'SEBI Nariman Point Physical Audit Travel',
-    detail: 'Uber for Business + Client lunch with SEBI inspection officer. Tax invoices attached.',
-    amountOrDays: '₹4,850',
-    submittedAt: 'Yesterday, 04:15 PM',
-    status: 'Pending',
-  },
-  {
-    id: 't-app-3',
-    type: 'Shift Regularization',
-    employeeName: 'Devendra Kothari',
-    employeeCode: 'EMP-11512',
-    empId: 'emp-11512',
-    title: 'Biometric Scanner Timeout at BKC Gate B',
-    detail: 'Regularization requested for in-punch at 09:05 AM instead of 10:14 AM.',
-    amountOrDays: 'In-punch correction',
-    submittedAt: 'Yesterday, 06:20 PM',
-    status: 'Pending',
-  },
-];
-
 export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
   const { showToast } = useToast();
-  const [approvals, setApprovals] = useState<TeamApproval[]>(INITIAL_TEAM_APPROVALS);
+  const { approvals, approveRequest, rejectRequest, employees } = useHrms();
 
   const handleApprove = (id: string, name: string, title: string) => {
-    setApprovals((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: 'Approved' } : a))
-    );
+    approveRequest(id);
     showToast({
       type: 'success',
-      message: `Approved ${title} for ${name}.`,
-      undoAction: () => {
-        setApprovals((prev) =>
-          prev.map((a) => (a.id === id ? { ...a, status: 'Pending' } : a))
-        );
-      },
+      message: `Approved ${title} for ${name}. Ledger updated.`,
     });
   };
 
   const handleReject = (id: string, name: string, title: string) => {
-    setApprovals((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: 'Rejected' } : a))
-    );
+    rejectRequest(id);
     showToast({
       type: 'info',
       message: `Rejected ${title} for ${name}.`,
     });
   };
 
+  const pendingApprovals = approvals.filter((a) => a.status === 'pending');
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="p-4 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg flex flex-wrap items-center justify-between gap-4">
+      <div className="p-4 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg flex flex-wrap items-center justify-between gap-4 shadow-xs">
         <div>
           <div className="flex items-center space-x-2">
             <span className="text-[11px] font-mono text-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] px-2 py-0.5 rounded border border-[var(--border-subtle)]">
@@ -101,7 +40,7 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
             </span>
             <span className="text-[12px] text-[var(--text-secondary)]">Risk & Quantitative Analytics Desk</span>
           </div>
-          <h2 className="text-[18px] font-semibold text-[var(--text-primary)] mt-1">
+          <h2 className="text-[18px] font-bold text-[var(--text-primary)] mt-1">
             Vikram Patel — Team Operations & Approvals
           </h2>
           <p className="text-[12px] text-[var(--text-tertiary)]">
@@ -111,41 +50,41 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
 
         <div className="flex items-center space-x-2 text-[12px]">
           <span className="text-[var(--text-secondary)]">Team health today:</span>
-          <span className="text-[var(--success-text)] font-semibold font-mono">17 / 18 Present</span>
+          <span className="text-emerald-700 font-bold font-mono">17 / 18 Present</span>
           <span className="text-[var(--text-tertiary)]">(1 on planned leave)</span>
         </div>
       </div>
 
       {/* Row: Pending Team Approvals Queue */}
-      <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5">
           <div>
-            <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
-              Needs Your Action — Team Approvals ({approvals.filter((a) => a.status === 'Pending').length})
+            <h3 className="text-[14px] font-bold text-[var(--text-primary)]">
+              Needs Your Action — Team Approvals ({pendingApprovals.length})
             </h3>
             <p className="text-[11px] text-[var(--text-tertiary)]">
               Leave requests, expense reimbursement audits & biometric regularizations
             </p>
           </div>
-          <span className="text-[11px] text-[var(--brand-primary)] font-medium">All SLA compliance on-track</span>
+          <span className="text-[11px] text-[var(--brand-primary)] font-semibold">SLA compliance 100% on-track</span>
         </div>
 
         <div className="space-y-3">
-          {approvals.map((item) => (
+          {approvals.slice(0, 5).map((item) => (
             <div
               key={item.id}
-              className="p-3.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded-lg space-y-2 hover:border-[var(--border-default)] transition-colors"
+              className="p-3.5 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg space-y-2 hover:border-[var(--border-default)] transition-colors"
             >
               <div className="flex flex-wrap items-center justify-between gap-2 text-[12px]">
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => onOpenDrawer(item.empId)}
-                    className="font-semibold text-[var(--text-primary)] hover:underline"
+                    onClick={() => onOpenDrawer(item.employee.id)}
+                    className="font-bold text-[var(--text-primary)] hover:text-[var(--brand-primary)] hover:underline cursor-pointer"
                   >
-                    {item.employeeName}
+                    {item.employee.name}
                   </button>
-                  <span className="text-[11px] font-mono text-[var(--text-tertiary)]">{item.employeeCode}</span>
-                  <span className="text-[11px] text-[var(--brand-primary)] font-medium">• {item.type}</span>
+                  <span className="text-[11px] font-mono text-[var(--text-tertiary)]">{item.employee.employeeCode}</span>
+                  <span className="text-[11px] text-[var(--brand-primary)] font-semibold capitalize">• {item.type}</span>
                 </div>
                 <span className="text-[11px] font-mono tabular-nums text-[var(--text-tertiary)]">
                   {item.submittedAt}
@@ -153,37 +92,38 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
               </div>
 
               <div className="text-[12px]">
-                <div className="font-medium text-[var(--text-primary)]">{item.title}</div>
-                <div className="text-[11px] text-[var(--text-tertiary)]">{item.detail}</div>
+                <div className="font-semibold text-[var(--text-primary)]">{item.title}</div>
+                <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">{item.details.description}</div>
               </div>
 
               <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px]">
-                <span className="font-mono text-[var(--text-secondary)] font-medium">
-                  Impact: <strong className="text-[var(--text-primary)]">{item.amountOrDays}</strong>
+                <span className="font-mono text-[var(--text-secondary)]">
+                  Scope: <strong className="text-[var(--text-primary)]">{item.primaryMetric}</strong>
                 </span>
 
-                {item.status === 'Pending' ? (
+                {item.status === 'pending' ? (
                   <div className="flex items-center space-x-3">
                     <button
-                      onClick={() => handleApprove(item.id, item.employeeName, item.title)}
-                      className="font-medium text-[var(--brand-primary)] hover:underline flex items-center space-x-1"
+                      onClick={() => handleApprove(item.id, item.employee.name, item.title)}
+                      className="font-semibold text-[var(--brand-primary)] hover:underline flex items-center space-x-1 cursor-pointer"
                     >
-                      <CheckCircle2 size={12} />
+                      <CheckCircle2 size={13} />
                       <span>Approve</span>
                     </button>
                     <button
-                      onClick={() => handleReject(item.id, item.employeeName, item.title)}
-                      className="font-medium text-[var(--danger-text)] hover:underline flex items-center space-x-1"
+                      onClick={() => handleReject(item.id, item.employee.name, item.title)}
+                      className="font-semibold text-[var(--danger)] hover:underline flex items-center space-x-1 cursor-pointer"
                     >
-                      <XCircle size={12} />
+                      <XCircle size={13} />
                       <span>Reject</span>
                     </button>
                   </div>
                 ) : (
                   <span
-                    className={`font-medium ${
-                      item.status === 'Approved' ? 'text-[var(--success-text)]' : 'text-[var(--danger-text)]'
-                    }`}
+                    className={cn(
+                      'font-bold text-[11px] capitalize',
+                      item.status === 'approved' ? 'text-emerald-700' : 'text-rose-600'
+                    )}
                   >
                     {item.status}
                   </span>
@@ -197,93 +137,55 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
       {/* Row: Team Members Roster and Scheduled 1-on-1s */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Team Members Roster (7 columns) */}
-        <div className="lg:col-span-7 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-3">
-          <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2">
-            <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
+        <div className="lg:col-span-7 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-3 shadow-xs">
+          <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5">
+            <h3 className="text-[14px] font-bold text-[var(--text-primary)]">
               Direct & Indirect Reports (Risk & Quant Desk)
             </h3>
-            <span className="text-[11px] text-[var(--text-tertiary)]">18 Members</span>
+            <span className="text-[11px] text-[var(--text-tertiary)] font-mono">{employees.length} Members</span>
           </div>
 
           <div className="space-y-2 text-[12px]">
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex items-center justify-between">
-              <div>
-                <button
-                  onClick={() => onOpenDrawer('emp-10482')}
-                  className="font-semibold text-[var(--text-primary)] hover:underline"
-                >
-                  Ananya Iyer
-                </button>
-                <div className="text-[11px] text-[var(--text-tertiary)]">AVP, Equity Research • BKC HQ</div>
+            {employees.slice(0, 5).map((emp) => (
+              <div
+                key={emp.id}
+                onClick={() => onOpenDrawer(emp.id)}
+                className="p-3 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] rounded-lg flex items-center justify-between transition-colors cursor-pointer"
+              >
+                <div>
+                  <span className="font-semibold text-[var(--text-primary)] block">{emp.name}</span>
+                  <div className="text-[11px] text-[var(--text-tertiary)]">{emp.role} • {emp.location}</div>
+                </div>
+                <div className="text-right">
+                  <span className="text-[11px] text-emerald-700 font-semibold block">Present (09:12 AM)</span>
+                  <span className="text-[10px] text-[var(--text-tertiary)] font-mono">{emp.employeeCode}</span>
+                </div>
               </div>
-              <span className="text-[11px] text-[var(--success-text)] font-medium">Present (In at 09:12 AM)</span>
-            </div>
-
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex items-center justify-between">
-              <div>
-                <button
-                  onClick={() => onOpenDrawer('emp-10931')}
-                  className="font-semibold text-[var(--text-primary)] hover:underline"
-                >
-                  Rohan Mehta
-                </button>
-                <div className="text-[11px] text-[var(--text-tertiary)]">Lead Compliance Officer • Nariman Pt</div>
-              </div>
-              <span className="text-[11px] text-[var(--success-text)] font-medium">Present (In at 08:58 AM)</span>
-            </div>
-
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex items-center justify-between">
-              <div>
-                <button
-                  onClick={() => onOpenDrawer('emp-11309')}
-                  className="font-semibold text-[var(--text-primary)] hover:underline"
-                >
-                  Amit Joshi
-                </button>
-                <div className="text-[11px] text-[var(--text-tertiary)]">Senior Backend Architect • Hinjawadi</div>
-              </div>
-              <span className="text-[11px] text-[var(--warning-text)] font-medium">Present (Late 09:42 AM)</span>
-            </div>
-
-            <div className="p-2.5 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex items-center justify-between">
-              <div>
-                <button
-                  onClick={() => onOpenDrawer('emp-11512')}
-                  className="font-semibold text-[var(--text-primary)] hover:underline"
-                >
-                  Devendra Kothari
-                </button>
-                <div className="text-[11px] text-[var(--text-tertiary)]">Quant Modeler • Bengaluru ORR</div>
-              </div>
-              <span className="text-[11px] text-[var(--text-tertiary)] font-medium">On Paternity Leave (to 05 Dec)</span>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Scheduled 1-on-1s & OKRs (5 columns) */}
-        <div className="lg:col-span-5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-3">
-          <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2">
-            <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
-              Scheduled 1-on-1s & Reviews
+        {/* 1-on-1s and Action Checklist (5 columns) */}
+        <div className="lg:col-span-5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-3 shadow-xs">
+          <div className="border-b border-[var(--border-subtle)] pb-2.5">
+            <h3 className="text-[14px] font-bold text-[var(--text-primary)]">
+              Manager Weekly Cadence
             </h3>
-            <span className="text-[11px] text-[var(--brand-primary)] font-medium">Q3 Cycle</span>
+            <p className="text-[11px] text-[var(--text-tertiary)]">Quarterly reviews and 1-on-1 alignments</p>
           </div>
 
-          <div className="space-y-2 text-[12px]">
-            <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded space-y-1">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-[var(--text-primary)]">1-on-1: Ananya Iyer</span>
-                <span className="font-mono text-[11px] text-[var(--brand-primary)]">Tomorrow, 11:30 AM</span>
-              </div>
-              <p className="text-[11px] text-[var(--text-tertiary)]">Topic: Institutional client expansion coverage & Band L6 appraisal milestone.</p>
+          <div className="space-y-2.5 text-[12px]">
+            <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)]">
+              <span className="font-semibold text-[var(--text-primary)] block">Ananya Iyer (1-on-1 Bi-weekly)</span>
+              <span className="text-[11px] text-[var(--text-secondary)]">Today at 03:30 PM • Research Pod BKC</span>
             </div>
-
-            <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded space-y-1">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-[var(--text-primary)]">1-on-1: Amit Joshi</span>
-                <span className="font-mono text-[11px] text-[var(--brand-primary)]">26 Nov, 03:00 PM</span>
-              </div>
-              <p className="text-[11px] text-[var(--text-tertiary)]">Topic: Hinjawadi cloud disaster recovery drill report & capacity planning.</p>
+            <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)]">
+              <span className="font-semibold text-[var(--text-primary)] block">Rohan Mehta (SEBI Filing Audit)</span>
+              <span className="text-[11px] text-[var(--text-secondary)]">Tomorrow at 11:00 AM • Zoom</span>
+            </div>
+            <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)]">
+              <span className="font-semibold text-[var(--text-primary)] block">Q4 Objective & Key Results (OKR) Sign-off</span>
+              <span className="text-[11px] text-emerald-700 font-semibold">14 / 18 finalized</span>
             </div>
           </div>
         </div>

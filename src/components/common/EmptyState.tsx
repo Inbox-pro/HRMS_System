@@ -1,9 +1,9 @@
-import type { LucideIcon } from 'lucide-react';
+import React from 'react';
 import { Inbox } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface EmptyStateProps {
-  icon?: LucideIcon;
+  icon?: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
   title: string;
   description: string;
   actionLabel?: string;

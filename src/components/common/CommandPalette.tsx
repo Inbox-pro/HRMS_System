@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Search, ArrowRight, ShieldCheck, DollarSign, Calendar } from 'lucide-react';
+import { Search, ArrowRight, ShieldCheck, DollarSign, Calendar, Users, FileText } from 'lucide-react';
+import { useHrms } from '../../context/HrmsContext';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface CommandPaletteProps {
 }
 
 export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPaletteProps) {
+  const { employees, setActiveNav } = useHrms();
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -29,19 +31,56 @@ export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPal
   if (!isOpen) return null;
 
   const quickActions = [
-    { id: 'act-1', title: 'Initiate TDS 24Q Monthly Challan', category: 'Compliance', icon: ShieldCheck },
-    { id: 'act-2', title: 'Freeze Attendance for Nov Payroll', category: 'Payroll', icon: DollarSign },
-    { id: 'act-3', title: 'Approve All Pending Casual Leaves', category: 'Time & Leave', icon: Calendar },
-    { id: 'act-4', title: 'Download FY 2026-27 Gratuity Actuarial Report', category: 'Reports', icon: ShieldCheck },
-  ];
-
-  const employees = [
-    { id: 'emp-10482', name: 'Ananya Iyer', role: 'AVP, Equity Research', dept: 'Investment Banking', code: 'EMP-10482' },
-    { id: 'emp-10931', name: 'Rohan Mehta', role: 'Lead Compliance Officer', dept: 'Legal & Regulatory', code: 'EMP-10931' },
-    { id: 'emp-cand-402', name: 'Farah Sheikh', role: 'Senior Quantitative Modeler', dept: 'Risk & Quant', code: 'CAND-0402' },
-    { id: 'emp-10214', name: 'Vikram Patel', role: 'VP, Infrastructure & SecOps', dept: 'Technology', code: 'EMP-10214' },
-    { id: 'emp-10884', name: 'Neha Sharma', role: 'Director, Private Wealth', dept: 'Wealth Management', code: 'EMP-10884' },
-    { id: 'emp-11309', name: 'Amit Joshi', role: 'Senior Backend Engineer', dept: 'Technology Core', code: 'EMP-11309' },
+    {
+      id: 'act-1',
+      title: 'Navigate to People Directory',
+      category: 'Directory',
+      icon: Users,
+      action: () => {
+        setActiveNav('people');
+        onClose();
+      },
+    },
+    {
+      id: 'act-2',
+      title: 'View Time & Biometric Punches',
+      category: 'Attendance',
+      icon: Calendar,
+      action: () => {
+        setActiveNav('time_leave');
+        onClose();
+      },
+    },
+    {
+      id: 'act-3',
+      title: 'Open Monthly Payroll & Tax Ledger',
+      category: 'Payroll',
+      icon: DollarSign,
+      action: () => {
+        setActiveNav('payroll');
+        onClose();
+      },
+    },
+    {
+      id: 'act-4',
+      title: 'Inspect Hiring ATS & Candidates',
+      category: 'Hiring',
+      icon: ShieldCheck,
+      action: () => {
+        setActiveNav('hiring');
+        onClose();
+      },
+    },
+    {
+      id: 'act-5',
+      title: 'View Service Desk & Tickets',
+      category: 'Helpdesk',
+      icon: FileText,
+      action: () => {
+        setActiveNav('helpdesk');
+        onClose();
+      },
+    },
   ];
 
   const filteredEmployees = query
@@ -49,8 +88,8 @@ export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPal
         (e) =>
           e.name.toLowerCase().includes(query.toLowerCase()) ||
           e.role.toLowerCase().includes(query.toLowerCase()) ||
-          e.code.toLowerCase().includes(query.toLowerCase()) ||
-          e.dept.toLowerCase().includes(query.toLowerCase())
+          e.employeeCode.toLowerCase().includes(query.toLowerCase()) ||
+          e.department.toLowerCase().includes(query.toLowerCase())
       )
     : employees.slice(0, 4);
 
@@ -75,14 +114,14 @@ export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPal
       >
         {/* Search Input Bar */}
         <div className="flex items-center px-4 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)]">
-          <Search size={18} strokeWidth={1.7} className="text-[var(--text-tertiary)] shrink-0 mr-3" />
+          <Search size={18} strokeWidth={1.8} className="text-[var(--text-tertiary)] shrink-0 mr-3" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search employees, payroll actions, policies, or press Esc..."
+            placeholder="Search workforce members, pages, payroll, or press Esc..."
             autoFocus
-            className="w-full h-12 bg-transparent text-[14px] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none"
+            className="w-full h-12 bg-transparent text-[14px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none"
           />
           <kbd className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-[var(--bg-surface-subtle)] text-[var(--text-tertiary)] border border-[var(--border-subtle)]">
             ESC
@@ -93,27 +132,23 @@ export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPal
         <div className="max-h-80 overflow-y-auto p-2 divide-y divide-[var(--border-subtle)]">
           {/* Quick Actions */}
           <div className="py-1">
-            <div className="px-3 py-1 text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
-              Quick Actions
+            <div className="px-3 py-1 text-[10px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
+              Navigation & Actions
             </div>
             {filteredActions.map((act) => {
               const Icon = act.icon;
               return (
                 <button
                   key={act.id}
-                  onClick={() => {
-                    alert(`Action executed: ${act.title}`);
-                    onClose();
-                  }}
-                  className="w-full flex items-center justify-between px-3 py-2 text-left rounded-[6px] hover:bg-[var(--bg-surface-subtle)] text-[13px] text-[var(--text-primary)] transition-colors group"
+                  onClick={act.action}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] text-left text-[13px] group transition-colors cursor-pointer"
                 >
                   <div className="flex items-center space-x-2.5">
-                    <Icon size={16} strokeWidth={1.7} className="text-[var(--brand-primary)]" />
-                    <span>{act.title}</span>
+                    <Icon size={15} className="text-[var(--brand-primary)]" />
+                    <span className="font-medium text-[var(--text-primary)]">{act.title}</span>
                   </div>
-                  <span className="text-[11px] text-[var(--text-tertiary)] group-hover:text-[var(--brand-primary)] flex items-center">
-                    {act.category}
-                    <ArrowRight size={12} className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="text-[11px] text-[var(--text-tertiary)] group-hover:text-[var(--text-secondary)]">
+                    {act.category} →
                   </span>
                 </button>
               );
@@ -121,9 +156,9 @@ export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPal
           </div>
 
           {/* Employees */}
-          <div className="pt-2 pb-1">
-            <div className="px-3 py-1 text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
-              Employees & Candidates
+          <div className="py-1">
+            <div className="px-3 py-1 text-[10px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
+              Workforce Directory ({filteredEmployees.length})
             </div>
             {filteredEmployees.map((emp) => (
               <button
@@ -132,30 +167,26 @@ export function CommandPalette({ isOpen, onClose, onSelectEmployee }: CommandPal
                   onSelectEmployee(emp.id);
                   onClose();
                 }}
-                className="w-full flex items-center justify-between px-3 py-2 text-left rounded-[6px] hover:bg-[var(--bg-surface-subtle)] text-[13px] text-[var(--text-primary)] transition-colors group"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] text-left text-[13px] group transition-colors cursor-pointer"
               >
                 <div className="flex items-center space-x-2.5">
-                  <div className="w-6 h-6 rounded-full bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center font-medium text-[11px]">
-                    {emp.name.split(' ').map((n) => n[0]).join('')}
+                  <div className="w-6 h-6 rounded-full bg-[var(--brand-primary)] text-white flex items-center justify-center font-bold text-[10px]">
+                    {emp.initials}
                   </div>
                   <div>
-                    <span className="font-medium text-[var(--text-primary)] mr-2">{emp.name}</span>
-                    <span className="text-[11px] font-mono text-[var(--text-tertiary)]">({emp.code})</span>
+                    <span className="font-semibold text-[var(--text-primary)] block leading-tight">{emp.name}</span>
+                    <span className="text-[11px] text-[var(--text-tertiary)] block leading-tight">
+                      {emp.role} • {emp.department}
+                    </span>
                   </div>
                 </div>
-                <div className="text-[12px] text-[var(--text-secondary)] text-right">
-                  <span>{emp.role}</span>
-                  <span className="text-[var(--text-tertiary)] ml-1.5">• {emp.dept}</span>
+                <div className="flex items-center space-x-2 text-[11px] font-mono text-[var(--text-tertiary)]">
+                  <span>{emp.employeeCode}</span>
+                  <ArrowRight size={13} className="text-[var(--text-tertiary)] group-hover:text-[var(--brand-primary)]" />
                 </div>
               </button>
             ))}
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="px-4 py-2 border-t border-[var(--border-subtle)] bg-[var(--bg-surface-hover)] flex items-center justify-between text-[11px] text-[var(--text-tertiary)]">
-          <span>Navigate with ↑ ↓ and press Enter</span>
-          <span>Acme Financial Services — HRMS v2.4</span>
         </div>
       </div>
     </div>

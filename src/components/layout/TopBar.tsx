@@ -1,63 +1,87 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Search,
   Bell,
   Sun,
   Moon,
   ChevronDown,
-  Check,
-  LogOut,
-  Shield,
-  Briefcase,
-  User,
+  RotateCcw,
+  ExternalLink,
+  CheckCheck,
+  Trash2,
 } from 'lucide-react';
-import type { UserRole } from '../../types';
+import { useHrms } from '../../context/HrmsContext';
+import { useToast } from '../common/Toast';
 import { cn } from '../../lib/utils';
 
 interface TopBarProps {
-  role: UserRole;
-  onRoleChange: (newRole: UserRole) => void;
-  onOpenSearch: () => void;
-  isDarkMode: boolean;
-  onToggleTheme: () => void;
   sidebarCollapsed: boolean;
+  activeNav?: string;
 }
 
 export function TopBar({
-  role,
-  onRoleChange,
-  onOpenSearch,
-  isDarkMode,
-  onToggleTheme,
   sidebarCollapsed,
+  activeNav = 'dashboard',
 }: TopBarProps) {
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const {
+    role,
+    currentUser,
+    notifications,
+    markNotificationRead,
+    markAllNotificationsRead,
+    clearNotifications,
+    isDarkMode,
+    setIsDarkMode,
+    setIsCommandPaletteOpen,
+    setSelectedEmployeeId,
+    resetAllDataToDefaults,
+    logout,
+  } = useHrms();
+
+  const { showToast } = useToast();
+
   const [showNotifMenu, setShowNotifMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [notifFilter, setNotifFilter] = useState<'all' | 'unread'>('all');
 
-  const roleLabels: Record<UserRole, { title: string; subtitle: string; icon: React.ElementType }> = {
-    hr_admin: { title: 'HR Admin', subtitle: 'Acme Financial Services (All 1,284)', icon: Shield },
-    manager: { title: 'Manager View', subtitle: 'Risk & Quant Team (18 Members)', icon: Briefcase },
-    employee: { title: 'Employee View', subtitle: 'Ananya Iyer (EMP-10482)', icon: User },
+  const getPageTitle = () => {
+    switch (activeNav) {
+      case 'people':
+        return role === 'employee' ? 'Company Directory' : role === 'manager' ? 'Team Directory' : 'People Operations';
+      case 'time_leave':
+        return role === 'employee' ? 'My Time & Attendance' : role === 'manager' ? 'Team Attendance' : 'Time & Attendance';
+      case 'payroll':
+        return role === 'employee' ? 'My Compensation & Tax' : role === 'manager' ? 'My Compensation' : 'Payroll & Statutory';
+      case 'hiring':
+        return role === 'employee' ? 'Internal Job Board (IJP)' : role === 'manager' ? 'Team Requisitions' : 'Hiring & ATS';
+      case 'performance':
+        return role === 'employee' ? 'My Goals & Performance' : role === 'manager' ? 'Team Reviews & Goals' : 'Performance & Bell Curve';
+      case 'engagement':
+        return 'Workforce Engagement';
+      case 'insights':
+        return 'Executive Insights';
+      case 'helpdesk':
+        return role === 'employee' ? 'My Service Tickets' : 'Helpdesk & Requests';
+      case 'dashboard':
+      default:
+        return role === 'employee' ? 'Home (ESS)' : role === 'manager' ? 'Manager Hub' : 'Workforce Dashboard';
+    }
   };
 
-  const notifications = [
-    { id: 'n1', text: 'TDS Form 24Q deposit due in 14 days', time: '10m ago', urgent: true },
-    { id: 'n2', text: '3 pending leave approvals require sign-off', time: '45m ago', urgent: false },
-    { id: 'n3', text: 'Farah Sheikh accepted offer letter draft', time: '2h ago', urgent: false },
-  ];
+  const unreadCount = notifications.filter((n) => !n.read).length;
+  const filteredNotifications = notifFilter === 'all' ? notifications : notifications.filter((n) => !n.read);
 
   return (
     <header
       className={cn(
-        'h-14 fixed top-0 right-0 z-20 flex items-center justify-between px-6 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] transition-all duration-200',
+        'h-14 fixed top-0 right-0 z-20 flex items-center justify-between px-6 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] transition-all duration-200 select-none',
         sidebarCollapsed ? 'left-16' : 'left-60'
       )}
     >
       {/* Left: Page Title & Context */}
-      <div className="flex items-center space-x-3">
-        <h1 className="text-[16px] font-semibold text-[var(--text-primary)] tracking-tight">
-          Dashboard
+      <div className="flex items-center space-x-3 shrink-0">
+        <h1 className="text-[15px] font-semibold text-[var(--text-primary)] tracking-tight">
+          {getPageTitle()}
         </h1>
         <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-[var(--border-strong)]" />
         <span className="hidden sm:inline-block text-[12px] text-[var(--text-tertiary)] tabular-nums">
@@ -66,14 +90,14 @@ export function TopBar({
       </div>
 
       {/* Center: Global Search Bar with Ctrl+K shortcut */}
-      <div className="flex-1 max-w-md mx-6 hidden md:block">
+      <div className="flex-1 max-w-md mx-4 hidden md:block">
         <button
-          onClick={onOpenSearch}
-          className="w-full h-8 px-3 rounded-[6px] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] flex items-center justify-between text-[13px] text-[var(--text-tertiary)] transition-colors group"
+          onClick={() => setIsCommandPaletteOpen(true)}
+          className="w-full h-8 px-3 rounded-[6px] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] flex items-center justify-between text-[12px] text-[var(--text-tertiary)] transition-colors group cursor-pointer"
         >
           <div className="flex items-center space-x-2">
-            <Search size={15} strokeWidth={1.7} className="text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]" />
-            <span className="text-[var(--text-secondary)]">Search employees, payroll, filings...</span>
+            <Search size={14} strokeWidth={1.8} className="text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]" />
+            <span className="text-[var(--text-secondary)]">Search employees, payroll, filings, requisitions...</span>
           </div>
           <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--bg-surface)] text-[var(--text-tertiary)] border border-[var(--border-subtle)] shadow-xs">
             Ctrl + K
@@ -82,95 +106,108 @@ export function TopBar({
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center space-x-3">
-        {/* Role Switcher */}
-        <div className="relative">
-          <button
-            onClick={() => setShowRoleMenu(!showRoleMenu)}
-            className="flex items-center space-x-2 px-2.5 py-1.5 rounded-[6px] text-[13px] font-medium border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-subtle)] transition-colors"
-            title="Switch Dashboard Role View"
-          >
-            {React.createElement(roleLabels[role].icon, {
-              size: 15,
-              strokeWidth: 1.7,
-              className: 'text-[var(--brand-primary)]',
-            })}
-            <span className="text-[var(--text-primary)] font-semibold">{roleLabels[role].title}</span>
-            <ChevronDown size={14} className="text-[var(--text-tertiary)]" />
-          </button>
-
-          {showRoleMenu && (
-            <div className="absolute right-0 mt-1 w-64 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg shadow-xl py-1 z-30 divide-y divide-[var(--border-subtle)] animate-in fade-in-50 duration-100">
-              <div className="px-3 py-2 text-[11px] font-semibold text-[var(--text-tertiary)] uppercase tracking-wider">
-                Select Dashboard Role
-              </div>
-              {(['hr_admin', 'manager', 'employee'] as UserRole[]).map((r) => {
-                const item = roleLabels[r];
-                const Icon = item.icon;
-                const isSelected = role === r;
-                return (
-                  <button
-                    key={r}
-                    onClick={() => {
-                      onRoleChange(r);
-                      setShowRoleMenu(false);
-                    }}
-                    className={cn(
-                      'w-full flex items-center justify-between px-3 py-2 text-left hover:bg-[var(--bg-surface-subtle)] transition-colors',
-                      isSelected && 'bg-[var(--brand-subtle)]'
-                    )}
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <Icon
-                        size={16}
-                        strokeWidth={1.7}
-                        className={isSelected ? 'text-[var(--brand-primary)]' : 'text-[var(--text-tertiary)]'}
-                      />
-                      <div>
-                        <div className={cn('text-[13px] font-medium', isSelected ? 'text-[var(--brand-primary)] font-semibold' : 'text-[var(--text-primary)]')}>
-                          {item.title}
-                        </div>
-                        <div className="text-[11px] text-[var(--text-tertiary)]">{item.subtitle}</div>
-                      </div>
-                    </div>
-                    {isSelected && <Check size={14} className="text-[var(--brand-primary)] shrink-0" />}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Notifications */}
+      <div className="flex items-center space-x-2.5 shrink-0">
+        {/* Notifications Dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowNotifMenu(!showNotifMenu)}
-            className="p-1.5 rounded-[6px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] relative transition-colors"
+            className="p-1.5 rounded-[6px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] relative transition-colors cursor-pointer"
             title="Notifications"
             aria-label="View notifications"
           >
-            <Bell size={18} strokeWidth={1.7} />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[var(--brand-primary)] ring-2 ring-[var(--bg-surface)]" />
+            <Bell size={17} strokeWidth={1.8} />
+            {unreadCount > 0 && (
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[var(--brand-primary)] ring-2 ring-[var(--bg-surface)] animate-pulse" />
+            )}
           </button>
 
           {showNotifMenu && (
-            <div className="absolute right-0 mt-1 w-72 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg shadow-xl py-1 z-30 divide-y divide-[var(--border-subtle)] animate-in fade-in-50 duration-100">
-              <div className="px-3 py-2 flex items-center justify-between">
-                <span className="text-[12px] font-semibold text-[var(--text-primary)]">Notifications</span>
-                <span className="text-[11px] text-[var(--brand-primary)] hover:underline cursor-pointer">
-                  Mark all read
-                </span>
-              </div>
-              <div className="py-1 max-h-60 overflow-y-auto">
-                {notifications.map((n) => (
-                  <div
-                    key={n.id}
-                    className="px-3 py-2 hover:bg-[var(--bg-surface-subtle)] text-[12px] cursor-pointer"
+            <div className="absolute right-0 mt-1 w-80 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg shadow-xl z-30 divide-y divide-[var(--border-subtle)] animate-in fade-in-50 duration-100">
+              <div className="p-3 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <span className="text-[12px] font-semibold text-[var(--text-primary)]">Notifications</span>
+                  {unreadCount > 0 && (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[var(--brand-primary)] text-white font-medium">
+                      {unreadCount} new
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2 text-[11px]">
+                  <button
+                    onClick={markAllNotificationsRead}
+                    className="text-[var(--brand-primary)] hover:underline flex items-center space-x-1 cursor-pointer"
                   >
-                    <p className="text-[var(--text-primary)] font-medium">{n.text}</p>
-                    <span className="text-[11px] text-[var(--text-tertiary)] mt-0.5 block">{n.time}</span>
+                    <CheckCheck size={12} />
+                    <span>Read all</span>
+                  </button>
+                  <button
+                    onClick={clearNotifications}
+                    className="text-[var(--text-tertiary)] hover:text-[var(--danger)] cursor-pointer"
+                    title="Clear all"
+                  >
+                    <Trash2 size={12} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Tabs */}
+              <div className="flex border-b border-[var(--border-subtle)] px-3 text-[11px] font-medium bg-[var(--bg-surface-subtle)]">
+                <button
+                  onClick={() => setNotifFilter('all')}
+                  className={cn(
+                    'py-1.5 px-2 border-b-2 transition-colors cursor-pointer',
+                    notifFilter === 'all'
+                      ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] font-semibold'
+                      : 'border-transparent text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+                  )}
+                >
+                  All ({notifications.length})
+                </button>
+                <button
+                  onClick={() => setNotifFilter('unread')}
+                  className={cn(
+                    'py-1.5 px-2 border-b-2 transition-colors cursor-pointer',
+                    notifFilter === 'unread'
+                      ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] font-semibold'
+                      : 'border-transparent text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+                  )}
+                >
+                  Unread ({unreadCount})
+                </button>
+              </div>
+
+              {/* List */}
+              <div className="max-h-72 overflow-y-auto divide-y divide-[var(--border-subtle)]">
+                {filteredNotifications.length === 0 ? (
+                  <div className="p-6 text-center text-[12px] text-[var(--text-tertiary)]">
+                    No notifications to display
                   </div>
-                ))}
+                ) : (
+                  filteredNotifications.map((n) => (
+                    <div
+                      key={n.id}
+                      onClick={() => markNotificationRead(n.id)}
+                      className={cn(
+                        'p-3 hover:bg-[var(--bg-surface-subtle)] text-[12px] transition-colors cursor-pointer flex items-start space-x-2.5',
+                        !n.read && 'bg-emerald-50/40 dark:bg-emerald-950/20'
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          'w-2 h-2 rounded-full mt-1.5 shrink-0',
+                          n.read ? 'bg-transparent' : n.urgent ? 'bg-[var(--danger)]' : 'bg-[var(--brand-primary)]'
+                        )}
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="font-semibold text-[var(--text-primary)] text-[11px]">{n.title}</p>
+                          <span className="text-[10px] text-[var(--text-tertiary)]">{n.time}</span>
+                        </div>
+                        <p className="text-[var(--text-secondary)] text-[11px] mt-0.5 leading-snug">{n.text}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           )}
@@ -178,51 +215,83 @@ export function TopBar({
 
         {/* Theme Toggle */}
         <button
-          onClick={onToggleTheme}
-          className="p-1.5 rounded-[6px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] transition-colors"
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="p-1.5 rounded-[6px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
           title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
-          {isDarkMode ? <Sun size={18} strokeWidth={1.7} /> : <Moon size={18} strokeWidth={1.7} />}
+          {isDarkMode ? <Sun size={17} strokeWidth={1.8} /> : <Moon size={17} strokeWidth={1.8} />}
         </button>
 
-        {/* Profile Avatar / Menu */}
+        {/* Profile Avatar & Account Menu */}
         <div className="relative">
           <button
             onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center space-x-2 p-1 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] transition-colors"
+            className="flex items-center space-x-2 p-1 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
             title="User Profile"
           >
-            <div className="w-7 h-7 rounded-full bg-[var(--brand-primary)] text-white flex items-center justify-center font-medium text-[12px]">
-              AI
+            <div className="w-7 h-7 rounded-full bg-[var(--brand-primary)] text-white flex items-center justify-center font-semibold text-[11px]">
+              {currentUser.initials}
             </div>
-            <span className="text-[13px] font-medium text-[var(--text-primary)] hidden lg:inline-block">
-              Ananya I.
-            </span>
-            <ChevronDown size={14} className="text-[var(--text-tertiary)] hidden lg:inline-block" />
+            <div className="text-left hidden lg:block leading-tight">
+              <span className="text-[12px] font-semibold text-[var(--text-primary)] block">
+                {currentUser.name.split(' ')[0]}
+              </span>
+              <span className="text-[10px] text-[var(--text-tertiary)] block">
+                {currentUser.employeeCode}
+              </span>
+            </div>
+            <ChevronDown size={13} className="text-[var(--text-tertiary)] hidden lg:inline-block" />
           </button>
 
           {showProfileMenu && (
-            <div className="absolute right-0 mt-1 w-56 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg shadow-xl py-1 z-30 divide-y divide-[var(--border-subtle)]">
-              <div className="px-3 py-2">
-                <p className="text-[13px] font-medium text-[var(--text-primary)]">Ananya Iyer</p>
-                <p className="text-[11px] text-[var(--text-tertiary)]">HR Admin • Acme Fin Services</p>
+            <div className="absolute right-0 mt-1 w-60 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-lg shadow-xl py-1 z-30 divide-y divide-[var(--border-subtle)]">
+              <div className="px-3 py-2.5">
+                <p className="text-[12px] font-semibold text-[var(--text-primary)]">{currentUser.name}</p>
+                <p className="text-[11px] text-[var(--text-secondary)]">{currentUser.role}</p>
+                <p className="text-[10px] text-[var(--text-tertiary)] mt-0.5">{currentUser.email}</p>
               </div>
+
               <div className="py-1 text-[12px]">
-                <button className="w-full px-3 py-1.5 text-left text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] hover:text-[var(--text-primary)]">
-                  Account settings
+                <button
+                  onClick={() => {
+                    setSelectedEmployeeId(currentUser.id);
+                    setShowProfileMenu(false);
+                  }}
+                  className="w-full px-3 py-1.5 text-left text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] hover:text-[var(--text-primary)] flex items-center justify-between cursor-pointer"
+                >
+                  <span>My Profile & Leaves</span>
+                  <ExternalLink size={12} />
                 </button>
-                <button className="w-full px-3 py-1.5 text-left text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] hover:text-[var(--text-primary)]">
-                  Audit log & activity
-                </button>
-                <button className="w-full px-3 py-1.5 text-left text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] hover:text-[var(--text-primary)]">
-                  Acme HR policies
+                <button
+                  onClick={() => {
+                    resetAllDataToDefaults();
+                    setShowProfileMenu(false);
+                    showToast({
+                      type: 'info',
+                      message: 'Reset enterprise state to default seed data.',
+                    });
+                  }}
+                  className="w-full px-3 py-1.5 text-left text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] hover:text-[var(--text-primary)] flex items-center justify-between cursor-pointer"
+                >
+                  <span>Reset Demo Data</span>
+                  <RotateCcw size={12} />
                 </button>
               </div>
+
               <div className="py-1 text-[12px]">
-                <button className="w-full px-3 py-1.5 text-left text-[var(--danger)] hover:bg-[var(--danger-subtle)] flex items-center justify-between">
-                  <span>Sign out</span>
-                  <LogOut size={13} />
+                <button
+                  onClick={() => {
+                    setShowProfileMenu(false);
+                    logout();
+                    showToast({
+                      type: 'info',
+                      message: 'Signed out of Acme Enterprise workspace.',
+                    });
+                  }}
+                  className="w-full px-3 py-1.5 text-left text-[var(--danger)] hover:bg-[var(--danger-subtle)] cursor-pointer"
+                >
+                  Sign Out (SSO)
                 </button>
               </div>
             </div>
