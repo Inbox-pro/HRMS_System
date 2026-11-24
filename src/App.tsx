@@ -10,7 +10,6 @@ import { AttendanceChart } from './components/dashboard/AttendanceChart';
 import { PayrollCycleTracker } from './components/dashboard/PayrollCycleTracker';
 import { HiringFunnel } from './components/dashboard/HiringFunnel';
 import { CelebrationsCard } from './components/dashboard/CelebrationsCard';
-import { AskOrbitEntryPoint } from './components/dashboard/AskOrbitEntryPoint';
 import { AskOrbitPanel } from './components/dashboard/AskOrbitPanel';
 import { EmployeeDrawer } from './components/common/EmployeeDrawer';
 import { CommandPalette } from './components/common/CommandPalette';
@@ -247,14 +246,6 @@ export function DashboardContent() {
                     onSelectEmployee={(empId) => setSelectedEmployeeId(empId)}
                   />
                 </div>
-              </section>
-
-              {/* 6. AI Assistant Entry Point */}
-              <section aria-label="AI Assistant Orbit">
-                <AskOrbitEntryPoint
-                  onOpen={() => setIsAskOrbitOpen(true)}
-                  onSelectPrompt={(_prompt) => setIsAskOrbitOpen(true)}
-                />
               </section>
             </>
           )}
