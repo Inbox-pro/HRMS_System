@@ -636,7 +636,7 @@ interface HrmsContextType {
 
 const HrmsContext = createContext<HrmsContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'orbit_hrms_live_store_v1';
+const STORAGE_KEY = 'orbit_hrms_live_store_v2';
 
 const PATH_TO_NAV_MAP: Record<string, string> = {
   '/dashboard': 'dashboard',
@@ -664,23 +664,38 @@ const NAV_TO_PATH_MAP: Record<string, string> = {
 };
 
 export function HrmsProvider({ children }: { children: React.ReactNode }) {
-  // Authentication state
+  // Authentication state - default is logged out (false) on first visit
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     try {
       const savedAuth = localStorage.getItem(`${STORAGE_KEY}_auth`);
-      return savedAuth !== null ? JSON.parse(savedAuth) : true;
+      return savedAuth !== null ? JSON.parse(savedAuth) : false;
     } catch {
-      return true;
+      return false;
     }
   });
 
-  // Real URL path routing
+  // Real URL path routing - default route is /login when unauthenticated or at root
   const [currentPath, setCurrentPath] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname;
-      return path && path !== '/' ? path : '/dashboard';
+    try {
+      const savedAuth = localStorage.getItem(`${STORAGE_KEY}_auth`);
+      const authed = savedAuth !== null ? JSON.parse(savedAuth) : false;
+      if (!authed) {
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+          window.history.replaceState({}, '', '/login');
+        }
+        return '/login';
+      }
+      if (typeof window !== 'undefined') {
+        const path = window.location.pathname;
+        if (path && path !== '/') {
+          return path;
+        }
+        window.history.replaceState({}, '', '/dashboard');
+      }
+      return '/dashboard';
+    } catch {
+      return '/login';
     }
-    return '/dashboard';
   });
 
   // Role & Nav
@@ -726,10 +741,22 @@ export function HrmsProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Sync browser URL bar with auth state without causing cascading renders
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (!isAuthenticated && window.location.pathname !== '/login') {
+        window.history.replaceState({}, '', '/login');
+      } else if (isAuthenticated && (window.location.pathname === '/' || window.location.pathname === '')) {
+        window.history.replaceState({}, '', '/dashboard');
+      }
+    }
+  }, [isAuthenticated]);
+
   // Sync browser back/forward buttons (popstate)
   useEffect(() => {
     const handlePopState = () => {
-      const path = window.location.pathname || '/dashboard';
+      const defaultRoute = isAuthenticated ? '/dashboard' : '/login';
+      const path = window.location.pathname && window.location.pathname !== '/' ? window.location.pathname : defaultRoute;
       setCurrentPath(path);
       const nav = PATH_TO_NAV_MAP[path];
       if (nav) {
@@ -738,7 +765,7 @@ export function HrmsProvider({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  }, [isAuthenticated]);
 
   // Save auth & role to storage
   useEffect(() => {
