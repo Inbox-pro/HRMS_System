@@ -230,7 +230,7 @@ export function TopBar({
             className="flex items-center space-x-2 p-1 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
             title="User Profile"
           >
-            <div className="w-7 h-7 rounded-full bg-[var(--brand-primary)] text-white flex items-center justify-center font-semibold text-[11px]">
+            <div className="w-7 h-7 rounded-full bg-emerald-50 text-[var(--brand-primary)] border border-emerald-200 flex items-center justify-center font-bold text-[11px]">
               {currentUser.initials}
             </div>
             <div className="text-left hidden lg:block leading-tight">

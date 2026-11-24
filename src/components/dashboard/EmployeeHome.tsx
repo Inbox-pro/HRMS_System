@@ -313,8 +313,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             onClick={() => setIsPayslipModalOpen(true)}
             className="p-3 rounded-lg border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface)] text-left transition-all cursor-pointer group"
           >
-            <FileText size={18} className="text-[var(--brand-primary)] mb-1.5 group-hover:scale-110 transition-transform" />
-            <span className="font-bold text-[var(--text-primary)] block">Payslip View</span>
+            <div className="w-8 h-8 rounded-lg bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center mb-2 group-hover:bg-emerald-100 transition-colors">
+              <FileText size={16} />
+            </div>
+            <span className="font-semibold text-[var(--text-primary)] block">Payslip View</span>
             <span className="text-[10px] text-[var(--text-tertiary)]">Nov 2026 slip</span>
           </button>
 
@@ -322,8 +324,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             onClick={() => setIsApplyLeaveOpen(true)}
             className="p-3 rounded-lg border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface)] text-left transition-all cursor-pointer group"
           >
-            <Calendar size={18} className="text-emerald-700 mb-1.5 group-hover:scale-110 transition-transform" />
-            <span className="font-bold text-[var(--text-primary)] block">Apply Leave</span>
+            <div className="w-8 h-8 rounded-lg bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center mb-2 group-hover:bg-emerald-100 transition-colors">
+              <Calendar size={16} />
+            </div>
+            <span className="font-semibold text-[var(--text-primary)] block">Apply Leave</span>
             <span className="text-[10px] text-[var(--text-tertiary)]">EL / CL / SL</span>
           </button>
 
@@ -334,8 +338,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             }}
             className="p-3 rounded-lg border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface)] text-left transition-all cursor-pointer group"
           >
-            <ShieldCheck size={18} className="text-teal-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <span className="font-bold text-[var(--text-primary)] block">Tax Proofs</span>
+            <div className="w-8 h-8 rounded-lg bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center mb-2 group-hover:bg-emerald-100 transition-colors">
+              <ShieldCheck size={16} />
+            </div>
+            <span className="font-semibold text-[var(--text-primary)] block">Tax Proofs</span>
             <span className="text-[10px] text-[var(--text-tertiary)]">80C & HRA claim</span>
           </button>
 
@@ -346,8 +352,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             }}
             className="p-3 rounded-lg border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface)] text-left transition-all cursor-pointer group"
           >
-            <Clock size={18} className="text-amber-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <span className="font-bold text-[var(--text-primary)] block">Regularize</span>
+            <div className="w-8 h-8 rounded-lg bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center mb-2 group-hover:bg-emerald-100 transition-colors">
+              <Clock size={16} />
+            </div>
+            <span className="font-semibold text-[var(--text-primary)] block">Regularize</span>
             <span className="text-[10px] text-[var(--text-tertiary)]">Fix missed punch</span>
           </button>
 
@@ -358,8 +366,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             }}
             className="p-3 rounded-lg border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface)] text-left transition-all cursor-pointer group"
           >
-            <AlertCircle size={18} className="text-indigo-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <span className="font-bold text-[var(--text-primary)] block">Raise Ticket</span>
+            <div className="w-8 h-8 rounded-lg bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center mb-2 group-hover:bg-emerald-100 transition-colors">
+              <AlertCircle size={16} />
+            </div>
+            <span className="font-semibold text-[var(--text-primary)] block">Raise Ticket</span>
             <span className="text-[10px] text-[var(--text-tertiary)]">EPFO & IT query</span>
           </button>
 
@@ -370,8 +380,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             }}
             className="p-3 rounded-lg border border-[var(--border-subtle)] hover:border-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface)] text-left transition-all cursor-pointer group"
           >
-            <Award size={18} className="text-purple-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <span className="font-bold text-[var(--text-primary)] block">Refer a Peer</span>
+            <div className="w-8 h-8 rounded-lg bg-[var(--brand-subtle)] text-[var(--brand-primary)] flex items-center justify-center mb-2 group-hover:bg-emerald-100 transition-colors">
+              <Award size={16} />
+            </div>
+            <span className="font-semibold text-[var(--text-primary)] block">Refer a Peer</span>
             <span className="text-[10px] text-[var(--text-tertiary)]">₹50,000 bounty</span>
           </button>
         </div>
@@ -560,9 +572,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
                 </div>
                 <button
                   onClick={() => showToast({ type: 'success', message: 'Sent birthday greeting to Rohan Mehta!' })}
-                  className="px-2.5 py-1 text-[11px] font-semibold text-[var(--brand-primary)] bg-[var(--brand-subtle)] rounded hover:bg-emerald-100 cursor-pointer"
+                  className="px-2.5 py-1 text-[11px] font-medium text-[var(--brand-primary)] bg-[var(--brand-subtle)] rounded-md hover:bg-emerald-100 flex items-center space-x-1.5 cursor-pointer transition-colors"
                 >
-                  Send Wishes 🎂
+                  <Gift size={12} className="text-[var(--brand-primary)]" />
+                  <span>Send Greeting</span>
                 </button>
               </div>
 
@@ -573,9 +586,10 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
                 </div>
                 <button
                   onClick={() => showToast({ type: 'success', message: 'Sent congratulations to Vikram Patel!' })}
-                  className="px-2.5 py-1 text-[11px] font-semibold text-[var(--brand-primary)] bg-[var(--brand-subtle)] rounded hover:bg-emerald-100 cursor-pointer"
+                  className="px-2.5 py-1 text-[11px] font-medium text-[var(--brand-primary)] bg-[var(--brand-subtle)] rounded-md hover:bg-emerald-100 flex items-center space-x-1.5 cursor-pointer transition-colors"
                 >
-                  Congrats 🎉
+                  <Award size={12} className="text-[var(--brand-primary)]" />
+                  <span>Congratulate</span>
                 </button>
               </div>
             </div>
@@ -587,7 +601,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
               My Reporting Manager
             </div>
             <div className="flex items-center space-x-3 text-[12px]">
-              <div className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[13px]">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center font-bold text-[13px]">
                 VS
               </div>
               <div>
@@ -715,12 +729,12 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
               </div>
             </div>
 
-            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg flex items-center justify-between">
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider block">Net Take-Home Pay</span>
-                <span className="text-[11px] text-emerald-800 dark:text-emerald-400">Credited to Kotak Bank •••• 9412</span>
+                <span className="text-[10px] font-bold text-emerald-900 uppercase tracking-wider block">Net Take-Home Pay</span>
+                <span className="text-[11px] text-emerald-800">Credited to Kotak Bank •••• 9412</span>
               </div>
-              <span className="text-[22px] font-extrabold text-emerald-700 dark:text-emerald-300 font-mono">₹1,94,400</span>
+              <span className="text-[22px] font-extrabold text-emerald-700 font-mono">₹1,94,400</span>
             </div>
 
             <div className="flex justify-end space-x-2 pt-2 border-t">
