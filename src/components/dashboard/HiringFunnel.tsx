@@ -8,7 +8,7 @@ export function HiringFunnel({ stages }: HiringFunnelProps) {
   const maxCount = Math.max(...stages.map((s) => s.count)) || 1;
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 flex flex-col h-full">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div>
@@ -27,7 +27,7 @@ export function HiringFunnel({ stages }: HiringFunnelProps) {
       </div>
 
       {/* Funnel Stages */}
-      <div className="space-y-2.5 my-auto py-1">
+      <div className="space-y-3 my-auto py-1">
         {stages.map((stage, idx) => {
           const widthPct = Math.max(10, Math.round((stage.count / maxCount) * 100));
 
@@ -48,7 +48,7 @@ export function HiringFunnel({ stages }: HiringFunnelProps) {
               {/* Minimal bar track */}
               <div className="h-1.5 w-full bg-[var(--bg-surface-subtle)] rounded-full overflow-hidden flex">
                 <div
-                  className="h-full bg-[var(--brand-primary)] rounded-full transition-all duration-300"
+                  className="h-full bg-[var(--brand-primary)] rounded-full transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
                   style={{ width: `${widthPct}%` }}
                 />
               </div>

@@ -74,50 +74,46 @@ export function TopBar({
   return (
     <header
       className={cn(
-        'h-14 fixed top-0 right-0 z-20 flex items-center justify-between px-6 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] transition-all duration-200 select-none',
+        'h-14 fixed top-0 right-0 z-20 flex items-center justify-between px-6 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] transition-[left] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] select-none',
         sidebarCollapsed ? 'left-16' : 'left-60'
       )}
     >
-      {/* Left: Page Title & Context */}
-      <div className="flex items-center space-x-3 shrink-0">
-        <h1 className="text-[15px] font-semibold text-[var(--text-primary)] tracking-tight">
+      {/* Left: Page Title */}
+      <div className="flex items-center shrink-0">
+        <h1 className="text-[15px] font-medium text-[var(--text-primary)] tracking-tight">
           {getPageTitle()}
         </h1>
-        <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-[var(--border-strong)]" />
-        <span className="hidden sm:inline-block text-[12px] text-[var(--text-tertiary)] tabular-nums">
-          Monday, 23 Nov 2026
-        </span>
       </div>
 
       {/* Center: Global Search Bar with Ctrl+K shortcut */}
       <div className="flex-1 max-w-md mx-4 hidden md:block">
         <button
           onClick={() => setIsCommandPaletteOpen(true)}
-          className="w-full h-8 px-3 rounded-[6px] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] flex items-center justify-between text-[12px] text-[var(--text-tertiary)] transition-colors group cursor-pointer"
+          className="w-full h-8 px-3 rounded-[8px] bg-[var(--bg-surface-subtle)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] flex items-center justify-between text-[12px] text-[var(--text-tertiary)] transition-colors group cursor-pointer"
         >
           <div className="flex items-center space-x-2">
-            <Search size={14} strokeWidth={1.8} className="text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]" />
-            <span className="text-[var(--text-secondary)]">Search employees, payroll, filings, requisitions...</span>
+            <Search size={16} strokeWidth={1.5} className="text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)]" />
+            <span className="text-[var(--text-secondary)]">Search</span>
           </div>
-          <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--bg-surface)] text-[var(--text-tertiary)] border border-[var(--border-subtle)] shadow-xs">
+          <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded-[4px] bg-[var(--bg-surface)] text-[var(--text-tertiary)] border border-[var(--border-subtle)]">
             Ctrl + K
           </kbd>
         </button>
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center space-x-2.5 shrink-0">
+      <div className="flex items-center space-x-2 shrink-0">
         {/* Notifications Dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowNotifMenu(!showNotifMenu)}
-            className="p-1.5 rounded-[6px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] relative transition-colors cursor-pointer"
+            className="p-2 rounded-[8px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] relative transition-colors cursor-pointer"
             title="Notifications"
             aria-label="View notifications"
           >
-            <Bell size={17} strokeWidth={1.8} />
+            <Bell size={16} strokeWidth={1.5} />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[var(--brand-primary)] ring-2 ring-[var(--bg-surface)] animate-pulse" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[var(--brand-primary)]" />
             )}
           </button>
 
@@ -189,7 +185,7 @@ export function TopBar({
                       onClick={() => markNotificationRead(n.id)}
                       className={cn(
                         'p-3 hover:bg-[var(--bg-surface-subtle)] text-[12px] transition-colors cursor-pointer flex items-start space-x-2.5',
-                        !n.read && 'bg-emerald-50/40 dark:bg-emerald-950/20'
+                        !n.read && 'bg-[var(--brand-subtle)]'
                       )}
                     >
                       <span
@@ -216,32 +212,32 @@ export function TopBar({
         {/* Theme Toggle */}
         <button
           onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-1.5 rounded-[6px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
+          className="p-2 rounded-[8px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
           title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
-          {isDarkMode ? <Sun size={17} strokeWidth={1.8} /> : <Moon size={17} strokeWidth={1.8} />}
+          {isDarkMode ? <Sun size={16} strokeWidth={1.5} /> : <Moon size={16} strokeWidth={1.5} />}
         </button>
 
         {/* Profile Avatar & Account Menu */}
         <div className="relative">
           <button
             onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center space-x-2 p-1 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
+            className="flex items-center space-x-2 p-1 rounded-[8px] hover:bg-[var(--bg-surface-subtle)] transition-colors cursor-pointer"
             title="User Profile"
           >
-            <div className="w-7 h-7 rounded-full bg-emerald-50 text-[var(--brand-primary)] border border-emerald-200 flex items-center justify-center font-bold text-[11px]">
+            <div className="w-7 h-7 rounded-full bg-[var(--bg-surface-subtle)] text-[var(--text-primary)] border border-[var(--border-default)] flex items-center justify-center font-medium text-[11px]">
               {currentUser.initials}
             </div>
             <div className="text-left hidden lg:block leading-tight">
-              <span className="text-[12px] font-semibold text-[var(--text-primary)] block">
+              <span className="text-[12px] font-medium text-[var(--text-primary)] block">
                 {currentUser.name.split(' ')[0]}
               </span>
-              <span className="text-[10px] text-[var(--text-tertiary)] block">
+              <span className="text-[11px] font-mono text-[var(--text-tertiary)] block">
                 {currentUser.employeeCode}
               </span>
             </div>
-            <ChevronDown size={13} className="text-[var(--text-tertiary)] hidden lg:inline-block" />
+            <ChevronDown size={14} strokeWidth={1.5} className="text-[var(--text-tertiary)] hidden lg:inline-block" />
           </button>
 
           {showProfileMenu && (

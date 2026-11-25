@@ -135,7 +135,7 @@ export function ApprovalsTable({
   };
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl overflow-hidden flex flex-col h-full">
       {/* Header with Title and Filter Tabs */}
       <div className="px-4 py-3 border-b border-[var(--border-subtle)] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center space-x-2">
@@ -248,9 +248,9 @@ export function ApprovalsTable({
                     <ArrowUpDown size={11} />
                   </div>
                 </th>
-                <th className="px-2.5 py-2">Details</th>
-                <th className="w-32 px-2.5 py-2 text-right">Value</th>
-                <th className="w-32 px-3 py-2 text-right">Actions</th>
+                <th className="px-3 py-2">Details</th>
+                <th className="w-40 px-3 py-2 text-right">Value</th>
+                <th className="w-36 px-4 py-2 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border-subtle)]">
@@ -307,7 +307,7 @@ export function ApprovalsTable({
                     </td>
 
                     {/* Request Details */}
-                    <td className="px-2.5 py-2.5 truncate">
+                    <td className="px-3 py-3 truncate">
                       <div className="text-[12px] font-medium text-[var(--text-primary)] truncate">
                         {item.title}
                       </div>
@@ -317,12 +317,12 @@ export function ApprovalsTable({
                     </td>
 
                     {/* Value/Metric right-aligned in tabular figures */}
-                    <td className="w-32 px-2.5 py-2.5 text-right whitespace-nowrap tabular-nums font-medium text-[12px] text-[var(--text-primary)]">
+                    <td className="w-40 px-3 py-3 text-right truncate tabular-nums font-medium text-[12px] text-[var(--text-primary)]" title={item.primaryMetric}>
                       {item.primaryMetric}
                     </td>
 
-                    {/* Clean Linear-style text buttons (NO colored red/green pill boxes!) */}
-                    <td className="w-32 px-3 py-2.5 text-right whitespace-nowrap">
+                    {/* Clean Linear-style text buttons */}
+                    <td className="w-36 px-4 py-3 text-right whitespace-nowrap">
                       <div className="inline-flex items-center space-x-1.5 justify-end">
                         <button
                           onClick={() => handleInlineApprove(item)}

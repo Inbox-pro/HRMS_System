@@ -21,7 +21,7 @@ export function ComplianceAlerts({ alerts, onFileCompliance }: ComplianceAlertsP
   };
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl overflow-hidden flex flex-col h-full">
       {/* Header */}
       <div className="px-4 py-3 border-b border-[var(--border-subtle)] flex items-center justify-between">
         <h2 className="text-[13px] font-semibold text-[var(--text-primary)]">
@@ -41,7 +41,7 @@ export function ComplianceAlerts({ alerts, onFileCompliance }: ComplianceAlertsP
           return (
             <div
               key={item.id}
-              className="p-3.5 flex items-start justify-between hover:bg-[var(--bg-surface-hover)] transition-colors group"
+              className="p-4 flex items-start justify-between hover:bg-[var(--bg-surface-hover)] transition-colors group"
             >
               <div className="space-y-1 pr-3 flex-1 min-w-0">
                 <div className="flex items-center space-x-2 text-[11px] text-[var(--text-tertiary)]">

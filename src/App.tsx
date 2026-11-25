@@ -119,7 +119,7 @@ export function DashboardContent() {
       {/* Main Content Area */}
       <main
         className={cn(
-          'pt-14 transition-all duration-200 min-h-screen flex flex-col',
+          'pt-14 transition-[padding] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] min-h-screen flex flex-col',
           sidebarCollapsed ? 'pl-16' : 'pl-60'
         )}
       >
@@ -217,14 +217,20 @@ export function DashboardContent() {
                 </div>
               </section>
 
-              {/* 4. ROW OF 3 CHARTS */}
+              {/* 4. ROW OF CHARTS: Main trend chart + compact ranked lists */}
               <section
                 aria-label="Workforce Trends and Analytics"
-                className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
               >
-                <HeadcountTrendChart data={MOCK_HEADCOUNT_TREND} />
-                <AttritionChart data={MOCK_ATTRITION_DATA} />
-                <AttendanceChart data={MOCK_ATTENDANCE_WEEK} />
+                <div className="lg:col-span-6 flex flex-col">
+                  <HeadcountTrendChart data={MOCK_HEADCOUNT_TREND} />
+                </div>
+                <div className="lg:col-span-3 flex flex-col">
+                  <AttritionChart data={MOCK_ATTRITION_DATA} />
+                </div>
+                <div className="lg:col-span-3 flex flex-col">
+                  <AttendanceChart data={MOCK_ATTENDANCE_WEEK} />
+                </div>
               </section>
 
               {/* 5. ROW: Operations and Culture */}
@@ -253,11 +259,11 @@ export function DashboardContent() {
           {/* Clean, authentic SaaS enterprise footer */}
           <footer className="pt-6 pb-4 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between text-[11px] text-[var(--text-tertiary)] gap-2">
             <div className="flex items-center space-x-2">
-              <span className="font-semibold text-[var(--text-secondary)]">Orbit HR Enterprise v2.4</span>
+              <span className="font-medium text-[var(--text-secondary)]">Orbit HR Enterprise v2.4</span>
               <span>•</span>
               <span>Acme Financial Services Limited</span>
               <span>•</span>
-              <span className="text-emerald-700 font-medium">All Systems Operational</span>
+              <span className="text-[var(--success-text)] font-medium">All systems operational</span>
             </div>
             <div className="flex items-center space-x-4">
               <span>SEBI & EPFO Compliant</span>
@@ -287,7 +293,6 @@ export function DashboardContent() {
         onSelectEmployee={(empId) => setSelectedEmployeeId(empId)}
       />
 
-      {/* Floating AI Robot Assistant Widget */}
       <FloatingAiRobot />
     </div>
   );

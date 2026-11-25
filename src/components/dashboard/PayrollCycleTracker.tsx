@@ -17,7 +17,7 @@ export function PayrollCycleTracker({ steps }: PayrollCycleTrackerProps) {
   };
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 flex flex-col h-full">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -85,10 +85,10 @@ export function PayrollCycleTracker({ steps }: PayrollCycleTrackerProps) {
       {/* Footer Details */}
       <div className="flex items-center justify-between text-[11px] text-[var(--text-tertiary)] pt-3 border-t border-[var(--border-subtle)] mt-2">
         <span className="text-[var(--text-secondary)]">
-          Total gross salary: <strong className="text-[var(--text-primary)] font-medium tabular-nums font-mono">₹4,82,40,000</strong>
+          Total gross: <strong className="text-[var(--text-primary)] font-medium tabular-nums font-mono">₹4.82 Cr</strong>
         </span>
         <span className="text-[var(--text-secondary)]">
-          Statutory deductions: <strong className="text-[var(--text-primary)] font-medium tabular-nums font-mono">₹64,25,000</strong>
+          Statutory: <strong className="text-[var(--text-primary)] font-medium tabular-nums font-mono">₹64.25 L</strong>
         </span>
       </div>
     </div>

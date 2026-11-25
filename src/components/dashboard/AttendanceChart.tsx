@@ -1,12 +1,3 @@
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from 'recharts';
 import type { AttendanceDayPoint } from '../../types';
 
 interface AttendanceChartProps {
@@ -15,18 +6,18 @@ interface AttendanceChartProps {
 
 export function AttendanceChart({ data }: AttendanceChartProps) {
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 flex flex-col h-full">
-      <div className="flex items-center justify-between mb-3">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col h-full">
+      <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-[13px] font-semibold text-[var(--text-primary)]">
             Attendance this week
           </h3>
-          <p className="text-[11px] text-[var(--text-tertiary)]">
-            Daily biometric & leave activity
+          <p className="text-[12px] text-[var(--text-tertiary)]">
+            Biometric &amp; leave activity
           </p>
         </div>
         <div className="text-right">
-          <span className="text-[16px] font-semibold text-[var(--text-primary)] tabular-nums">
+          <span className="text-[16px] font-medium text-[var(--text-primary)] tabular-nums">
             92.8%
           </span>
           <span className="text-[11px] text-[var(--text-tertiary)] block font-mono">
@@ -35,58 +26,34 @@ export function AttendanceChart({ data }: AttendanceChartProps) {
         </div>
       </div>
 
-      <div className="w-full h-48">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 8, right: 10, left: -22, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="2 2" vertical={false} stroke="var(--border-subtle)" />
-            <XAxis
-              dataKey="day"
-              axisLine={{ stroke: 'var(--border-subtle)' }}
-              tickLine={false}
-              tick={{ fontSize: 10, fill: 'var(--text-tertiary)' }}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 10, fill: 'var(--text-tertiary)' }}
-            />
-            <Tooltip
-              content={({ active, payload, label }) => {
-                if (active && payload && payload.length) {
-                  const item = payload[0].payload as AttendanceDayPoint;
-                  return (
-                    <div className="p-2 rounded bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs text-[11px]">
-                      <div className="font-semibold text-[var(--text-primary)] mb-1">
-                        {label} ({item.dateStr})
-                      </div>
-                      <div className="space-y-0.5 font-mono">
-                        <div className="flex justify-between space-x-3 text-[var(--text-primary)]">
-                          <span>Present:</span>
-                          <span className="font-semibold tabular-nums">{item.present}</span>
-                        </div>
-                        <div className="flex justify-between space-x-3 text-[var(--warning-text)]">
-                          <span>On leave:</span>
-                          <span className="font-semibold tabular-nums">{item.onLeave}</span>
-                        </div>
-                        <div className="flex justify-between space-x-3 text-[var(--danger-text)]">
-                          <span>Absent:</span>
-                          <span className="font-semibold tabular-nums">{item.absent}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Bar dataKey="present" stackId="a" fill="var(--brand-primary)" barSize={10} />
-            <Bar dataKey="onLeave" stackId="a" fill="var(--warning)" />
-            <Bar dataKey="absent" stackId="a" fill="var(--danger)" radius={[1, 1, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      <div className="space-y-3 flex-1">
+        {data.map((item) => {
+          const total = item.present + item.onLeave + item.absent || 1;
+          const presentPct = Math.round((item.present / total) * 100);
+          const leavePct = Math.round((item.onLeave / total) * 100);
+          const absentPct = Math.max(0, 100 - presentPct - leavePct);
+
+          return (
+            <div key={item.dateStr} className="space-y-1">
+              <div className="flex items-center justify-between text-[12px]">
+                <span className="text-[var(--text-secondary)]">
+                  {item.day} <span className="font-mono text-[11px] text-[var(--text-tertiary)]">{item.dateStr}</span>
+                </span>
+                <span className="font-mono tabular-nums text-[var(--text-primary)] font-medium">
+                  {item.present.toLocaleString()}
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-[var(--bg-surface-subtle)] rounded-full overflow-hidden flex">
+                <div className="h-full bg-[var(--brand-primary)]" style={{ width: `${presentPct}%` }} />
+                <div className="h-full bg-[var(--warning)]" style={{ width: `${leavePct}%` }} />
+                <div className="h-full bg-[var(--danger)]" style={{ width: `${absentPct}%` }} />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="flex items-center justify-between text-[11px] text-[var(--text-tertiary)] pt-2 border-t border-[var(--border-subtle)] mt-1">
+      <div className="flex items-center justify-between text-[11px] text-[var(--text-tertiary)] pt-3 border-t border-[var(--border-subtle)] mt-4">
         <span className="flex items-center space-x-1">
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-primary)]" />
           <span>Present</span>

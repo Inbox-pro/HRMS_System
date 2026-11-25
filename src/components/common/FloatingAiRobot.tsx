@@ -23,10 +23,10 @@ export function FloatingAiRobot() {
 
   const initialGreeting =
     role === 'employee'
-      ? `Hi ${currentUser.name.split(' ')[0]}! 👋 I'm Orbit, your personal HRMS AI assistant. Ask me about your remaining leave days, November payslip breakdown, tax declarations, or company policies.`
+      ? `Orbit Assistant ready for ${currentUser.name.split(' ')[0]}. Ask about remaining leave days, November payslip breakdown, tax declarations, or company policies.`
       : role === 'manager'
-      ? `Hello Vikram! I'm Orbit. I can help you with team attendance regularizations, leave approvals, headcount mandates, and employee performance tracking.`
-      : `Hello Pooja! I'm Orbit AI. Ask me about November payroll reconciliation, EPFO ECR challan status, TDS 24Q filing deadlines, or workforce analytics.`;
+      ? 'Orbit Assistant ready. Ask about team attendance regularizations, leave approvals, headcount mandates, or performance tracking.'
+      : 'Orbit Assistant ready. Ask about November payroll reconciliation, EPFO ECR challan status, TDS 24Q filing deadlines, or workforce analytics.';
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -103,44 +103,41 @@ export function FloatingAiRobot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative flex items-center space-x-2 px-3.5 py-2.5 rounded-full bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white shadow-xl hover:shadow-2xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95"
-          title="Ask Orbit AI Assistant"
+          className="flex items-center space-x-2 h-10 px-4 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-colors duration-150 cursor-pointer active:scale-[0.98]"
+          title="Ask Orbit Assistant"
+          aria-label="Ask Orbit Assistant"
         >
-          <div className="relative">
-            <Bot size={22} className="text-white animate-bounce" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white" />
-          </div>
-          <span className="text-[13px] font-bold tracking-tight pr-1">Ask Orbit</span>
+          <Bot size={18} strokeWidth={1.5} className="text-white" />
+          <span className="text-[13px] font-medium">Ask Orbit</span>
         </button>
       )}
 
       {/* Floating AI Chat Pop-up Window */}
       {isOpen && (
-        <div className="w-[380px] sm:w-[400px] h-[540px] bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in-50 slide-in-from-bottom-5 duration-200">
+        <div className="w-[380px] sm:w-[400px] h-[540px] bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="p-3.5 bg-[var(--brand-primary)] text-white flex items-center justify-between shadow-sm">
+          <div className="p-4 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center font-bold">
-                <Bot size={18} className="text-white" />
+              <div className="w-8 h-8 rounded-[8px] bg-[var(--brand-subtle)] border border-[var(--brand-border)] flex items-center justify-center text-[var(--brand-primary)]">
+                <Bot size={16} strokeWidth={1.5} />
               </div>
               <div>
-                <div className="flex items-center space-x-1.5">
-                  <span className="font-bold text-[14px]">Orbit AI</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-[13px] text-[var(--text-primary)]">Orbit</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-primary)]" />
                 </div>
-                <span className="text-[10px] text-emerald-100 block font-mono">HRMS Intelligence Grounded</span>
+                <span className="text-[11px] text-[var(--text-tertiary)] block font-mono">HRMS grounded</span>
               </div>
             </div>
 
-            <div className="flex items-center space-x-1">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-full hover:bg-white/15 text-white/80 hover:text-white transition-colors cursor-pointer"
-                title="Close chat"
-              >
-                <X size={16} />
-              </button>
-            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1.5 rounded-[6px] hover:bg-[var(--bg-surface-subtle)] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+              title="Close chat"
+              aria-label="Close chat"
+            >
+              <X size={16} strokeWidth={1.5} />
+            </button>
           </div>
 
           {/* Quick Prompts Dock */}

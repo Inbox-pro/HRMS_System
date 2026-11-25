@@ -18,7 +18,7 @@ export function CelebrationsCard({ celebrations, onSelectEmployee }: Celebration
   };
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-4 flex flex-col h-full">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl p-4 flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div>
@@ -35,14 +35,14 @@ export function CelebrationsCard({ celebrations, onSelectEmployee }: Celebration
       </div>
 
       {/* List */}
-      <div className="divide-y divide-[var(--border-subtle)] space-y-1.5 flex-1 overflow-y-auto">
+      <div className="divide-y divide-[var(--border-subtle)] flex-1 overflow-y-auto">
         {celebrations.map((c) => {
           const isBirthday = c.type === 'birthday';
 
           return (
             <div
               key={c.id}
-              className="pt-2 first:pt-0 flex items-center justify-between hover:bg-[var(--bg-surface-hover)] -mx-1 px-1.5 py-1 rounded transition-colors"
+              className="py-2 first:pt-0 flex items-center justify-between hover:bg-[var(--bg-surface-hover)] -mx-2 px-2 rounded-[6px] transition-colors"
             >
               <div className="flex items-center space-x-2.5 truncate">
                 <button
