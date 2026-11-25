@@ -91,7 +91,7 @@ export function InsightsPage({ role, onBackToDashboard }: InsightsPageProps) {
           <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
             5.8%
           </div>
-          <span className="text-[11px] text-[var(--success-text)] font-medium">-1.4% vs BFSI peer median</span>
+          <span className="text-[11px] text-[var(--success-text)] font-medium">-1.4% vs IT peer median</span>
         </div>
 
         <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
@@ -257,7 +257,7 @@ export function InsightsPage({ role, onBackToDashboard }: InsightsPageProps) {
           <div className="space-y-3 text-[12px]">
             <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex justify-between items-center">
               <div>
-                <span className="font-semibold text-[var(--text-primary)]">Technology & Quant Engineering</span>
+                <span className="font-semibold text-[var(--text-primary)]">Platform & Cloud Engineering</span>
                 <p className="text-[11px] text-[var(--text-tertiary)]">Budget: ₹22.5 Cr • Actual run-rate: ₹21.8 Cr</p>
               </div>
               <span className="font-mono text-[var(--success-text)] font-semibold">-3.1% (Under budget)</span>
@@ -265,15 +265,15 @@ export function InsightsPage({ role, onBackToDashboard }: InsightsPageProps) {
 
             <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex justify-between items-center">
               <div>
-                <span className="font-semibold text-[var(--text-primary)]">Investment Banking & Research</span>
+                <span className="font-semibold text-[var(--text-primary)]">Software Engineering & AI</span>
                 <p className="text-[11px] text-[var(--text-tertiary)]">Budget: ₹18.0 Cr • Actual run-rate: ₹18.4 Cr</p>
               </div>
-              <span className="font-mono text-[var(--warning-text)] font-semibold">+2.2% (Deal volume bonus)</span>
+              <span className="font-mono text-[var(--warning-text)] font-semibold">+2.2% (Release delivery bonus)</span>
             </div>
 
             <div className="p-3 bg-[var(--bg-page)] border border-[var(--border-subtle)] rounded flex justify-between items-center">
               <div>
-                <span className="font-semibold text-[var(--text-primary)]">Wealth Management & Distribution</span>
+                <span className="font-semibold text-[var(--text-primary)]">Enterprise Solutions & Delivery</span>
                 <p className="text-[11px] text-[var(--text-tertiary)]">Budget: ₹16.5 Cr • Actual run-rate: ₹15.9 Cr</p>
               </div>
               <span className="font-mono text-[var(--success-text)] font-semibold">-3.6% (Under budget)</span>

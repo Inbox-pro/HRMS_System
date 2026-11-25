@@ -20,19 +20,19 @@ const RECOGNITIONS: RecognitionPost[] = [
     fromRole: 'CFO',
     toName: 'Rohan Mehta',
     toRole: 'Lead Compliance Officer',
-    category: 'Regulatory Precision',
-    message: 'Flawless execution during the unannounced SEBI physical inspection meeting at Nariman Point. All inspection queries answered before deadline.',
+    category: 'Security & Compliance',
+    message: 'Flawless execution during the external SOC 2 Type II & ISO 27001 audit at Nariman Point. All security controls verified before deadline.',
     timestamp: '2 hours ago',
-    valueTag: 'Institutional Integrity',
+    valueTag: 'Enterprise Integrity',
   },
   {
     id: 'rec-2',
     fromName: 'Aditya Sen',
-    fromRole: 'Head of Quant',
+    fromRole: 'VP of Engineering',
     toName: 'Devendra Kothari',
-    toRole: 'Quant Risk Analyst',
-    category: 'High Velocity Analytics',
-    message: 'Backtested the option delta hedging algorithms across 5-year volatility spikes overnight. Saved the desk 3 basis points on slippage.',
+    toRole: 'Senior Data Engineer',
+    category: 'High Velocity Engineering',
+    message: 'Optimized the distributed Spark ETL pipeline across 5-year telemetry logs overnight. Cut cloud compute cost by 28% and p99 latency in half.',
     timestamp: 'Yesterday',
     valueTag: 'Excellence in Execution',
   },
@@ -43,7 +43,7 @@ const RECOGNITIONS: RecognitionPost[] = [
     toName: 'Amit Joshi',
     toRole: 'Senior Backend Engineer',
     category: 'Zero-Downtime DR',
-    message: 'Seamless failover test between Hinjawadi primary data center and Bangalore cloud replication without dropping a single trading session.',
+    message: 'Seamless failover test between Hinjawadi primary data center and Bangalore cloud replication without dropping a single API request.',
     timestamp: '2 days ago',
     valueTag: 'Customer First',
   },
@@ -97,7 +97,7 @@ export function EngagementPage() {
           <div className="mt-1 text-[22px] font-semibold text-[var(--success-text)] tabular-nums">
             4.2% <span className="text-[12px] font-normal text-[var(--text-tertiary)]">(Low)</span>
           </div>
-          <span className="text-[11px] text-[var(--text-secondary)]">BFSI benchmark: 8.5%</span>
+          <span className="text-[11px] text-[var(--text-secondary)]">IT sector benchmark: 8.5%</span>
         </div>
 
         <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">

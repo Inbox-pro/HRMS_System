@@ -266,7 +266,7 @@ export function DashboardContent() {
               <span className="text-[var(--success-text)] font-medium">All systems operational</span>
             </div>
             <div className="flex items-center space-x-4">
-              <span>SEBI & EPFO Compliant</span>
+              <span>ISO 27001 & EPFO Compliant</span>
               <span>•</span>
               <span>256-bit AES Encryption</span>
               <span>•</span>

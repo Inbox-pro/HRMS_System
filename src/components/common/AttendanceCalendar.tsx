@@ -54,7 +54,7 @@ const NOVEMBER_DAYS: CalendarDayRecord[] = [
   { dayNumber: 19, dateStr: '2026-11-19', dayOfWeek: 'Thu', type: 'present', statusLabel: 'Present', inTime: '09:08 AM', outTime: '06:20 PM', workHours: '9h 12m', terminal: 'BKC HQ - Turnstile 02', shiftName: 'General 09:30-18:30' },
   { dayNumber: 20, dateStr: '2026-11-20', dayOfWeek: 'Fri', type: 'present', statusLabel: 'Present', inTime: '09:18 AM', outTime: '07:10 PM', workHours: '9h 52m', overtime: '0h 52m', terminal: 'BKC HQ - Turnstile 01', shiftName: 'General 09:30-18:30' },
   { dayNumber: 21, dateStr: '2026-11-21', dayOfWeek: 'Sat', type: 'weekend', statusLabel: 'Weekly Off' },
-  { dayNumber: 22, dateStr: '2026-11-22', dayOfWeek: 'Sun', type: 'present', statusLabel: 'Comp-Off Earned', inTime: '09:05 AM', outTime: '06:30 PM', workHours: '9h 25m', terminal: 'BKC HQ - Turnstile 02', shiftName: 'Mock Trading On-Call' },
+  { dayNumber: 22, dateStr: '2026-11-22', dayOfWeek: 'Sun', type: 'present', statusLabel: 'Comp-Off Earned', inTime: '09:05 AM', outTime: '06:30 PM', workHours: '9h 25m', terminal: 'BKC HQ - Turnstile 02', shiftName: 'Production Release On-Call' },
   { dayNumber: 23, dateStr: '2026-11-23', dayOfWeek: 'Mon', type: 'today', statusLabel: 'Today (Active)', inTime: '09:14 AM', outTime: 'In Progress', workHours: '8h 28m', terminal: 'BKC HQ - Turnstile 02', shiftName: 'General 09:30-18:30' },
   { dayNumber: 24, dateStr: '2026-11-24', dayOfWeek: 'Tue', type: 'future', statusLabel: 'Scheduled Work Day' },
   { dayNumber: 25, dateStr: '2026-11-25', dayOfWeek: 'Wed', type: 'future', statusLabel: 'Scheduled Work Day' },

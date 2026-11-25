@@ -20,13 +20,13 @@ interface ComplianceCourse {
 
 const COURSES: ComplianceCourse[] = [
   {
-    title: 'SEBI Prohibition of Insider Trading (PIT) FY 2026-27',
-    mandatoryFor: 'All 1,284 employees & designated persons',
+    title: 'ISO 27001 & SOC 2 Information Security FY 2026-27',
+    mandatoryFor: 'All 1,284 employees & contractors',
     dueDate: '30 Nov 2026',
     completedCount: 1248,
     totalCount: 1284,
     pct: 97.2,
-    regulatoryBody: 'SEBI (Securities & Exchange Board of India)',
+    regulatoryBody: 'CERT-In & ISO/IEC 27001:2022',
     employeeStatus: 'Completed',
   },
   {
@@ -40,18 +40,18 @@ const COURSES: ComplianceCourse[] = [
     employeeStatus: 'Pending Completion',
   },
   {
-    title: 'Anti-Money Laundering (AML) & KYC Master Direction Audit',
-    mandatoryFor: 'Treasury, Dealing, Wealth & Accounts staff',
+    title: 'Secure Coding & OWASP Top 10 Compliance Audit',
+    mandatoryFor: 'Engineering, DevOps, QA & Product staff',
     dueDate: '31 Dec 2026',
     completedCount: 420,
     totalCount: 462,
     pct: 90.9,
-    regulatoryBody: 'Reserve Bank of India (RBI NBFC Direction)',
+    regulatoryBody: 'OWASP & SOC 2 Security Committee',
     employeeStatus: 'Completed',
   },
   {
     title: 'Information Security & Data Protection (DPDP Act 2023)',
-    mandatoryFor: 'Technology, Eng, Ops & Trading members',
+    mandatoryFor: 'Technology, Cloud Ops, Security & Support members',
     dueDate: '10 Dec 2026',
     completedCount: 680,
     totalCount: 712,
@@ -74,36 +74,36 @@ interface EmployeeGoal {
 const ANANYA_GOALS: EmployeeGoal[] = [
   {
     id: 'g-1',
-    title: 'Automate SEBI Delta-Hedging Real-Time Surveillance Report',
-    category: 'Institutional Quantitative Research',
-    targetMetric: 'Sub-second real-time risk alert pipeline on Hinjawadi DR cluster',
+    title: 'Automate Zero-Downtime CI/CD Canary Deployment Pipeline',
+    category: 'Platform & Cloud Engineering',
+    targetMetric: 'Sub-second automated rollback & telemetry pipeline on Hinjawadi DR cluster',
     currentProgressPct: 92,
     weightagePct: 35,
     status: 'On Track',
   },
   {
     id: 'g-2',
-    title: 'Institutional Fixed Income & G-Sec Alpha Models',
-    category: 'Product & Analytics',
-    targetMetric: '15 basis points client alpha generation across 12 institutional clients',
+    title: 'Enterprise SaaS API Latency & Microservices Optimization',
+    category: 'Product & Architecture',
+    targetMetric: 'Reduce p99 API latency by 35% across 12 enterprise client tenants',
     currentProgressPct: 88,
     weightagePct: 30,
     status: 'On Track',
   },
   {
     id: 'g-3',
-    title: 'Band L6 Senior Analyst Mentorship Program',
+    title: 'Band L5 Senior Engineer Mentorship Program',
     category: 'People & Culture',
-    targetMetric: 'Coach 3 junior derivatives analysts on proprietary quant pricing stack',
+    targetMetric: 'Coach 3 junior software engineers on distributed systems & TypeScript stack',
     currentProgressPct: 75,
     weightagePct: 20,
     status: 'On Track',
   },
   {
     id: 'g-4',
-    title: 'SEBI Regulatory Audit Compliance Documentation',
+    title: 'SOC 2 & DPDP Act Data Privacy Audit Documentation',
     category: 'Compliance & Governance',
-    targetMetric: '100% inspection documentation sign-off before 30 Nov 2026',
+    targetMetric: '100% security audit documentation sign-off before 30 Nov 2026',
     currentProgressPct: 100,
     weightagePct: 15,
     status: 'Completed',
@@ -148,10 +148,10 @@ export function PerformancePage({ role }: PerformancePageProps) {
           </h2>
           <p className="text-[12px] text-[var(--text-tertiary)]">
             {role === 'employee'
-              ? 'Ananya Iyer (EMP-10482) • Q3 Annual Review Cycle • SEBI & Statutory compliance'
+              ? 'Ananya Iyer (EMP-10482) • Q3 Annual Review Cycle • ISO 27001 & Statutory compliance'
               : role === 'manager'
-              ? 'Risk & Quantitative Desk (18 members) • Direct reports appraisal queue'
-              : 'Q3 Annual Appraisal Cycle • SEBI & Statutory mandatory courses'}
+              ? 'Platform & Cloud Desk (18 members) • Direct reports appraisal queue'
+              : 'Q3 Annual Appraisal Cycle • ISO 27001 & Statutory mandatory courses'}
           </p>
         </div>
 
@@ -220,7 +220,7 @@ export function PerformancePage({ role }: PerformancePageProps) {
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Mandatory SEBI certified</span>
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Mandatory InfoSec certified</span>
             <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
               100%
             </div>
@@ -254,7 +254,7 @@ export function PerformancePage({ role }: PerformancePageProps) {
           </div>
 
           <div className="p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg">
-            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Mandatory SEBI certified</span>
+            <span className="text-[11px] font-medium text-[var(--text-tertiary)]">Mandatory InfoSec certified</span>
             <div className="mt-1 text-[22px] font-semibold text-[var(--text-primary)] tabular-nums">
               97.2%
             </div>
@@ -416,7 +416,7 @@ export function PerformancePage({ role }: PerformancePageProps) {
               <tbody className="divide-y divide-[var(--border-subtle)]">
                 <tr className="hover:bg-[var(--bg-surface-subtle)] transition-colors">
                   <td className="py-2.5 px-4 font-semibold text-[var(--text-primary)]">Ananya Iyer</td>
-                  <td className="py-2.5 px-4 text-[var(--text-secondary)]">AVP, Equity Research</td>
+                  <td className="py-2.5 px-4 text-[var(--text-secondary)]">Senior Software Engineer</td>
                   <td className="py-2.5 px-4 font-mono text-[var(--text-primary)]">4.8 / 5.0</td>
                   <td className="py-2.5 px-4 font-mono font-semibold text-[var(--brand-primary)]">4.9 / 5.0</td>
                   <td className="py-2.5 px-4 text-[var(--success-text)] font-medium">Recommended for Band L6</td>
@@ -544,7 +544,7 @@ export function PerformancePage({ role }: PerformancePageProps) {
                 Statutory Mandatory Learning & Regulatory Certifications
               </h3>
               <p className="text-[11px] text-[var(--text-tertiary)]">
-                SEBI Prohibition of Insider Trading, POSH Act 2013, AML/KYC & DPDP Act
+                ISO 27001 InfoSec, POSH Act 2013, OWASP & DPDP Act
               </p>
             </div>
           </div>

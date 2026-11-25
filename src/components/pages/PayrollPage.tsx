@@ -42,7 +42,7 @@ const DEPT_PAYROLL: DeptPayrollItem[] = [
     netPayable: '₹65.23 L',
   },
   {
-    department: 'Risk & Quantitative Trading',
+    department: 'Platform & Cloud Engineering',
     headcount: 125,
     grossPay: '₹76.20 L',
     basicSalary: '₹38.10 L',
@@ -62,7 +62,7 @@ const DEPT_PAYROLL: DeptPayrollItem[] = [
     netPayable: '₹89.54 L',
   },
   {
-    department: 'Private Wealth Management',
+    department: 'Enterprise Solutions & UX',
     headcount: 172,
     grossPay: '₹78.40 L',
     basicSalary: '₹39.20 L',
@@ -669,7 +669,7 @@ export function PayrollPage({ role }: PayrollPageProps) {
                   INBOX INFOTECH
                 </h3>
                 <p className="text-[11px] text-[var(--text-tertiary)] font-mono mt-0.5">
-                  CIN: L65920MH2010PLC204812 • SEBI Reg: INZ000219438
+                  CIN: U72200MH2018PTC314920 • ISO 27001:2022 Certified
                 </p>
                 <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
                   Tower 2, Floor 14, Bandra-Kurla Complex (BKC), Mumbai 400051

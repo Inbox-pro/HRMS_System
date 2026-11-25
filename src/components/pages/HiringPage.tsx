@@ -48,7 +48,7 @@ export function HiringPage({ role }: HiringPageProps) {
   // Form states
   const [newReq, setNewReq] = useState({
     roleTitle: '',
-    department: 'Risk & Quant',
+    department: 'Platform Engineering',
     hiringManager: 'Aditya Sen',
     location: 'Mumbai (BKC HQ)',
     targetBudget: '₹35.0 – 40.0 LPA',
@@ -58,7 +58,7 @@ export function HiringPage({ role }: HiringPageProps) {
   const [newCand, setNewCand] = useState({
     name: '',
     currentCompany: '',
-    applyingFor: requisitions[0]?.roleTitle || 'Senior Quantitative Modeler',
+    applyingFor: requisitions[0]?.roleTitle || 'Staff Backend Engineer',
     stage: 'Screening' as CandidateItem['stage'],
     rating: '4.5 / 5.0',
     noticePeriod: '30 Days',
@@ -469,7 +469,7 @@ export function HiringPage({ role }: HiringPageProps) {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Lead Algo Trading Developer"
+                  placeholder="e.g. Lead Full-Stack Engineer"
                   value={newReq.roleTitle}
                   onChange={(e) => setNewReq({ ...newReq, roleTitle: e.target.value })}
                   className="w-full px-2.5 py-1.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
@@ -484,11 +484,11 @@ export function HiringPage({ role }: HiringPageProps) {
                     onChange={(e) => setNewReq({ ...newReq, department: e.target.value })}
                     className="w-full px-2.5 py-1.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)]"
                   >
-                    <option value="Risk & Quant">Risk & Quant</option>
-                    <option value="Technology Infrastructure">Technology Infrastructure</option>
-                    <option value="Sales & Distribution">Sales & Distribution</option>
-                    <option value="Wealth Management">Wealth Management</option>
-                    <option value="Legal & Regulatory">Legal & Regulatory</option>
+                    <option value="Platform Engineering">Platform Engineering</option>
+                    <option value="Cloud & DevOps">Cloud & DevOps</option>
+                    <option value="Enterprise Sales">Enterprise Sales</option>
+                    <option value="Product & UX">Product & UX</option>
+                    <option value="Security & Compliance">Security & Compliance</option>
                   </select>
                 </div>
                 <div>

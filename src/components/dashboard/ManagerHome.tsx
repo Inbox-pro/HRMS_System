@@ -38,7 +38,7 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
             <span className="text-[11px] font-mono text-[var(--brand-primary)] bg-[var(--bg-surface-subtle)] px-2 py-0.5 rounded border border-[var(--border-subtle)]">
               MANAGER SCOPE
             </span>
-            <span className="text-[12px] text-[var(--text-secondary)]">Risk & Quantitative Analytics Desk</span>
+            <span className="text-[12px] text-[var(--text-secondary)]">Platform & Cloud Engineering Desk</span>
           </div>
           <h2 className="text-[18px] font-bold text-[var(--text-primary)] mt-1">
             Vikram Patel — Team Operations & Approvals
@@ -140,7 +140,7 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
         <div className="lg:col-span-7 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg p-5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-2.5">
             <h3 className="text-[14px] font-bold text-[var(--text-primary)]">
-              Direct & Indirect Reports (Risk & Quant Desk)
+              Direct & Indirect Reports (Platform & Cloud Desk)
             </h3>
             <span className="text-[11px] text-[var(--text-tertiary)] font-mono">{employees.length} Members</span>
           </div>
@@ -177,10 +177,10 @@ export function ManagerHome({ onOpenDrawer }: ManagerHomeProps) {
           <div className="space-y-2.5 text-[12px]">
             <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)]">
               <span className="font-semibold text-[var(--text-primary)] block">Ananya Iyer (1-on-1 Bi-weekly)</span>
-              <span className="text-[11px] text-[var(--text-secondary)]">Today at 03:30 PM • Research Pod BKC</span>
+              <span className="text-[11px] text-[var(--text-secondary)]">Today at 03:30 PM • Engineering Pod BKC</span>
             </div>
             <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)]">
-              <span className="font-semibold text-[var(--text-primary)] block">Rohan Mehta (SEBI Filing Audit)</span>
+              <span className="font-semibold text-[var(--text-primary)] block">Rohan Mehta (SOC 2 Security Audit)</span>
               <span className="text-[11px] text-[var(--text-secondary)]">Tomorrow at 11:00 AM • Zoom</span>
             </div>
             <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)]">

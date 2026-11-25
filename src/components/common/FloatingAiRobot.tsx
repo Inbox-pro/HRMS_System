@@ -71,7 +71,7 @@ export function FloatingAiRobot() {
 
       if (lower.includes('leave') || lower.includes('balance') || lower.includes('vacation')) {
         const bal = currentUser.leaveBalance || { casual: 4.5, earned: 12.0, sick: 6.0 };
-        reply = `Here is your reconciled leave balance for CY 2026:\n- **Earned Leave (EL)**: ${bal.earned} days available (accrues 1.75d/mo)\n- **Casual Leave (CL)**: ${bal.casual} days available (valid till 31 Dec)\n- **Sick Leave (SL)**: ${bal.sick} days available\n\nYou also have **2.0 days of Compensatory Off** earned from weekend trading sessions.`;
+        reply = `Here is your reconciled leave balance for CY 2026:\n- **Earned Leave (EL)**: ${bal.earned} days available (accrues 1.75d/mo)\n- **Casual Leave (CL)**: ${bal.casual} days available (valid till 31 Dec)\n- **Sick Leave (SL)**: ${bal.sick} days available\n\nYou also have **2.0 days of Compensatory Off** earned from weekend deployment sessions.`;
       } else if (lower.includes('tds') || lower.includes('tax') || lower.includes('deduction') || lower.includes('payslip')) {
         reply = `For your **November 2026 Payslip**, your Gross Earnings are **₹2,37,500** with the following deductions:\n- **TDS (Sec 192)**: ₹28,650\n- **EPF Employee (12%)**: ₹14,250\n- **Professional Tax**: ₹200\n- **Net Disbursed Take-Home**: **₹1,94,400** credited to your Kotak Bank account.\n\nReminder: Upload your HRA & 80C investment proofs before **31 Dec 2026**.`;
       } else if (lower.includes('punch') || lower.includes('biometric') || lower.includes('attendance')) {

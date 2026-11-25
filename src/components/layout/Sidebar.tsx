@@ -210,7 +210,7 @@ export function Sidebar({ collapsed, onToggleCollapse, activeNav, onSelectNav }:
                 Inbox Infotech
               </div>
               <div className="text-[11px] text-[var(--text-tertiary)] truncate leading-tight font-mono">
-                {role === 'employee' ? `${currentUser.name} (${currentUser.employeeCode})` : role === 'manager' ? 'Vikram Patel (VP Risk)' : 'Pooja Agarwal (Admin)'}
+                {role === 'employee' ? `${currentUser.name} (${currentUser.employeeCode})` : role === 'manager' ? 'Vikram Patel (VP Eng)' : 'Pooja Agarwal (Admin)'}
               </div>
             </div>
           )}

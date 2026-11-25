@@ -70,13 +70,13 @@ export function AskOrbitPanel({ isOpen, onClose }: AskOrbitPanelProps) {
         ];
       } else if (lower.includes('ananya') || lower.includes('leave balance') || lower.includes('coverage')) {
         replyText =
-          '**Ananya Iyer (EMP-10482)** has applied for **5 days of Earned Leave (02 Dec – 06 Dec 2026)**. Her current leave balances are:\n- Casual Leave: 4.5 days\n- Earned Leave: 12.0 days\n- Sick Leave: 6.0 days\n\nHer institutional equity research morning briefs have been formally handed over to **Rohan Mehta**. Coverage sign-off was confirmed by Vikramaditya Singhania.';
+          '**Ananya Iyer (EMP-10482)** has applied for **5 days of Earned Leave (02 Dec – 06 Dec 2026)**. Her current leave balances are:\n- Casual Leave: 4.5 days\n- Earned Leave: 12.0 days\n- Sick Leave: 6.0 days\n\nHer sprint release notes and client architecture briefs have been formally handed over to **Rohan Mehta**. Coverage sign-off was confirmed by Vikramaditya Singhania.';
         sources = ['Inbox Infotech Leave Register 2026', 'Handover Docket HD-10482'];
         followups = ['Approve Ananya leave request now', 'View Ananya Iyer full employee file'];
       } else if (lower.includes('attrition') || lower.includes('sales') || lower.includes('tech')) {
         replyText =
-          'Our annualized attrition in **Sales & Distribution is 14.2%** (32 exits YTD out of 225 headcount), whereas **Technology is 7.9%** (19 exits out of 240). The financial services industry benchmark in Mumbai/Pune is 12.5% for sales and 9.5% for tech.';
-        sources = ['HRMS Turnover Analytics', 'Aon Hewitt BFSI Benchmark 2026'];
+          'Our annualized attrition in **Enterprise Sales is 14.2%** (32 exits YTD out of 225 headcount), whereas **Engineering is 7.9%** (19 exits out of 240). The IT services industry benchmark in Mumbai/Pune is 12.5% for sales and 9.5% for engineering.';
+        sources = ['HRMS Turnover Analytics', 'NASSCOM IT Benchmark 2026'];
         followups = ['What were the exit interview reasons in Sales?', 'Download turnover cohort report'];
       } else if (lower.includes('pf') || lower.includes('epfo') || lower.includes('contribution')) {
         replyText =

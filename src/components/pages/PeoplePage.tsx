@@ -384,12 +384,12 @@ export function PeoplePage({ onSelectEmployee }: PeoplePageProps) {
                     onChange={(e) => setNewEmp({ ...newEmp, department: e.target.value })}
                     className="w-full px-2.5 py-1.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                   >
-                    <option value="Investment Banking">Investment Banking</option>
-                    <option value="Risk & Quant Analytics">Risk & Quant Analytics</option>
-                    <option value="Technology Infrastructure">Technology Infrastructure</option>
-                    <option value="Finance & Treasury">Finance & Treasury</option>
-                    <option value="Wealth Management">Wealth Management</option>
-                    <option value="Legal & Regulatory">Legal & Regulatory</option>
+                    <option value="Software Engineering">Software Engineering</option>
+                    <option value="Platform Engineering">Platform Engineering</option>
+                    <option value="Cloud & DevOps">Cloud & DevOps</option>
+                    <option value="Finance & Accounts">Finance & Accounts</option>
+                    <option value="Enterprise Solutions">Enterprise Solutions</option>
+                    <option value="Security & Compliance">Security & Compliance</option>
                   </select>
                 </div>
                 <div>

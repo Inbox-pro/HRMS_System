@@ -58,7 +58,7 @@ const INITIAL_REGULARIZATIONS: RegularizationRequest[] = [
     punchType: 'Out Punch',
     originalTime: 'Missed',
     requestedTime: '07:15 PM',
-    reason: 'Late trading session closure for US market opening derivatives surveillance.',
+    reason: 'Late production deployment window for US client SaaS release.',
     status: 'Pending',
   },
 ];
@@ -66,37 +66,37 @@ const INITIAL_REGULARIZATIONS: RegularizationRequest[] = [
 const SHIFT_ROSTER = [
   {
     id: 's-1',
-    shiftName: 'Capital Markets Desk Shift',
-    timings: '08:30 AM – 05:30 PM IST',
+    shiftName: 'Core Engineering & Product Shift',
+    timings: '09:00 AM – 06:00 PM IST',
     headcount: 428,
-    coverage: 'NSE / BSE Trading sessions, Algorithmic Execution',
+    coverage: 'Core SaaS Platform, Cloud Infrastructure & APIs',
     leadSupervisor: 'Vikramaditya Singhania',
-    activeStatus: 'Active (Peak Trading)',
+    activeStatus: 'Active (Peak Sprint)',
   },
   {
     id: 's-2',
-    shiftName: 'General Corporate & Advisory',
+    shiftName: 'General Corporate & Delivery',
     timings: '09:30 AM – 06:30 PM IST',
     headcount: 612,
-    coverage: 'Wealth Management, Legal, Finance & People Ops',
+    coverage: 'Enterprise Solutions, Legal, Finance & People Ops',
     leadSupervisor: 'Pooja Agarwal (CFO)',
     activeStatus: 'Active',
   },
   {
     id: 's-3',
-    shiftName: 'Technology Infrastructure & On-Call',
+    shiftName: 'Cloud SRE & US Overlap On-Call',
     timings: '01:00 PM – 10:00 PM IST',
     headcount: 184,
-    coverage: 'Cloud Ops, SecOps, High-frequency data pipeline',
+    coverage: 'Cloud Ops, SecOps, High-availability microservices',
     leadSupervisor: 'Vikram Patel (VP)',
     activeStatus: 'Active (Evening Coverage)',
   },
   {
     id: 's-4',
-    shiftName: 'Night Clearing & Depository Settlement',
+    shiftName: 'Nightly Batch & Cloud Backup Ops',
     timings: '08:00 PM – 05:00 AM IST',
     headcount: 60,
-    coverage: 'NSDL / CDSL Batch reconciliation, SEBI EOD dumps',
+    coverage: 'ETL Pipeline Monitoring, Automated DB Backups & SRE',
     leadSupervisor: 'Sunil Kulkarni',
     activeStatus: 'Scheduled',
   },
@@ -217,7 +217,7 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
             {role === 'employee'
               ? `${currentUser.name} (${currentUser.employeeCode}) • Live biometric logs & reconciled leave balances`
               : role === 'manager'
-              ? 'Risk & Quantitative Desk (18 members) • Attendance verification & regularizations'
+              ? 'Platform & Cloud Desk (18 members) • Attendance verification & regularizations'
               : 'Biometric gateway active • BKC HQ, Nariman Pt, Hinjawadi & ORR Hubs'}
           </p>
         </div>
@@ -311,7 +311,7 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
             <div className="mt-1 text-[22px] font-bold text-[var(--brand-primary)] tabular-nums">
               100%
             </div>
-            <span className="text-[11px] text-[var(--text-tertiary)]">Peak trading staffed</span>
+            <span className="text-[11px] text-[var(--text-tertiary)]">Core hours staffed</span>
           </div>
         </div>
       ) : (
@@ -701,7 +701,7 @@ export function TimeLeavePage({ onSelectEmployee, role }: TimeLeavePageProps) {
             <div className="p-3.5 bg-[var(--bg-surface-subtle)] border border-[var(--border-subtle)] rounded-lg flex justify-between items-center">
               <div>
                 <span className="font-semibold text-[var(--text-primary)]">Compensatory Off (Comp Off)</span>
-                <p className="text-[11px] text-[var(--text-tertiary)] mt-0.5">For weekend BSE/NSE mock trading sessions or emergency DR drills. Valid for 60 days from accrual.</p>
+                <p className="text-[11px] text-[var(--text-tertiary)] mt-0.5">For weekend production deployments or emergency DR drills. Valid for 60 days from accrual.</p>
               </div>
               <span className="font-mono text-[var(--text-primary)] font-bold text-[14px]">
                 2.0 days available

@@ -440,7 +440,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
               <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)] flex items-center justify-between">
                 <div>
                   <span className="font-bold text-[var(--text-primary)] block">EPFO UAN Form 13 Transfer</span>
-                  <span className="text-[11px] text-[var(--text-secondary)]">Kotak Securities to Inbox Infotech EPFO account</span>
+                  <span className="text-[11px] text-[var(--text-secondary)]">Infosys Limited to Inbox Infotech EPFO account</span>
                 </div>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
                   In Progress (HR Desk)
@@ -449,7 +449,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
 
               <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)] flex items-center justify-between">
                 <div>
-                  <span className="font-bold text-[var(--text-primary)] block">Client Equities Research Audit Expense</span>
+                  <span className="font-bold text-[var(--text-primary)] block">Client Architecture Workshop Travel Expense</span>
                   <span className="text-[11px] text-[var(--text-secondary)]">₹4,850 Travel Reimbursement • Tax Invoices Attached</span>
                 </div>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -474,7 +474,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
             <div className="space-y-3 text-[12px]">
               <div>
                 <div className="flex justify-between font-medium mb-1">
-                  <span className="text-[var(--text-primary)]">Institutional Derivatives Model Calibration</span>
+                  <span className="text-[var(--text-primary)]">Microservices Latency & API Gateway Optimization</span>
                   <span className="font-mono text-[var(--brand-primary)] font-bold">85%</span>
                 </div>
                 <div className="w-full bg-[var(--border-subtle)] h-2 rounded-full overflow-hidden">
@@ -484,7 +484,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
 
               <div>
                 <div className="flex justify-between font-medium mb-1">
-                  <span className="text-[var(--text-primary)]">Risk Framework SEBI Regulatory Filing</span>
+                  <span className="text-[var(--text-primary)]">SOC 2 Type II & ISO 27001 Security Audit</span>
                   <span className="font-mono text-emerald-700 font-bold">100%</span>
                 </div>
                 <div className="w-full bg-[var(--border-subtle)] h-2 rounded-full overflow-hidden">
@@ -494,7 +494,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
 
               <div>
                 <div className="flex justify-between font-medium mb-1">
-                  <span className="text-[var(--text-primary)]">Mentorship & Code Reviews for Junior Quant Analysts</span>
+                  <span className="text-[var(--text-primary)]">Mentorship & Code Reviews for Junior Engineers</span>
                   <span className="font-mono text-amber-600 font-bold">60%</span>
                 </div>
                 <div className="w-full bg-[var(--border-subtle)] h-2 rounded-full overflow-hidden">
@@ -546,7 +546,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
                   <span className="text-[10px] text-[var(--text-tertiary)] font-mono">25 Dec</span>
                 </div>
                 <p className="text-[11px] text-[var(--text-secondary)]">
-                  Markets closed. Essential clearing and tech on-call shifts scheduled.
+                  Office closed. Essential SRE and production on-call shifts scheduled.
                 </p>
               </div>
             </div>
