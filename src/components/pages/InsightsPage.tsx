@@ -58,7 +58,7 @@ export function InsightsPage({ role, onBackToDashboard }: InsightsPageProps) {
   const handleExportReport = () => {
     showToast({
       type: 'success',
-      message: 'Generated Acme_Executive_Board_HR_Intelligence_Report_Q3.pdf',
+      message: 'Generated Inbox_Infotech_Executive_Board_HR_Intelligence_Report_Q3.pdf',
     });
   };
 

@@ -282,7 +282,7 @@ export function TopBar({
                     logout();
                     showToast({
                       type: 'info',
-                      message: 'Signed out of Acme Enterprise workspace.',
+                      message: 'Signed out of Inbox Infotech Enterprise workspace.',
                     });
                   }}
                   className="w-full px-3 py-1.5 text-left text-[var(--danger)] hover:bg-[var(--danger-subtle)] cursor-pointer"

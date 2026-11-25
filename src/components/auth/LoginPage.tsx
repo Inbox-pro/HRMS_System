@@ -18,7 +18,7 @@ export function LoginPage() {
   const { login } = useHrms();
   const { showToast } = useToast();
 
-  const [email, setEmail] = useState('pooja.agarwal@acmefin.in');
+  const [email, setEmail] = useState('pooja.agarwal@inboxinfotech.in');
   const [password, setPassword] = useState('••••••••••••');
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState<UserRole>('hr_admin');
@@ -37,7 +37,7 @@ export function LoginPage() {
   const handlePersonaSelect = (role: UserRole, defaultEmail: string) => {
     setSelectedRole(role);
     setEmail(defaultEmail);
-    setPassword('Acme@2026!');
+    setPassword('Inbox@2026!');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -84,7 +84,7 @@ export function LoginPage() {
             <div>
               <span className="text-[16px] font-semibold tracking-tight block leading-tight">Orbit HR</span>
               <span className="text-[12px] text-white/80 block leading-tight">
-                Acme Financial Services
+                Inbox Infotech
               </span>
             </div>
           </div>
@@ -135,7 +135,7 @@ export function LoginPage() {
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
-                onClick={() => handlePersonaSelect('hr_admin', 'pooja.agarwal@acmefin.in')}
+                onClick={() => handlePersonaSelect('hr_admin', 'pooja.agarwal@inboxinfotech.in')}
                 className={`p-3 rounded-[8px] border text-left transition-colors duration-150 cursor-pointer ${selectedRole === 'hr_admin'
                     ? 'bg-[var(--brand-subtle)] border-[var(--brand-primary)]'
                     : 'bg-[var(--bg-surface-subtle)] border-[var(--border-subtle)] hover:border-[var(--border-default)]'
@@ -154,7 +154,7 @@ export function LoginPage() {
 
               <button
                 type="button"
-                onClick={() => handlePersonaSelect('manager', 'vikram.patel@acmefin.in')}
+                onClick={() => handlePersonaSelect('manager', 'vikram.patel@inboxinfotech.in')}
                 className={`p-3 rounded-[8px] border text-left transition-colors duration-150 cursor-pointer ${selectedRole === 'manager'
                     ? 'bg-[var(--brand-subtle)] border-[var(--brand-primary)]'
                     : 'bg-[var(--bg-surface-subtle)] border-[var(--border-subtle)] hover:border-[var(--border-default)]'
@@ -173,7 +173,7 @@ export function LoginPage() {
 
               <button
                 type="button"
-                onClick={() => handlePersonaSelect('employee', 'ananya.iyer@acmefin.in')}
+                onClick={() => handlePersonaSelect('employee', 'ananya.iyer@inboxinfotech.in')}
                 className={`p-3 rounded-[8px] border text-left transition-colors duration-150 cursor-pointer ${selectedRole === 'employee'
                     ? 'bg-[var(--brand-subtle)] border-[var(--brand-primary)]'
                     : 'bg-[var(--bg-surface-subtle)] border-[var(--border-subtle)] hover:border-[var(--border-default)]'
@@ -205,7 +205,7 @@ export function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@acmefin.in"
+                  placeholder="name@inboxinfotech.in"
                   className="w-full h-10 pl-9 pr-3 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-[8px] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                 />
               </div>
@@ -277,13 +277,13 @@ export function LoginPage() {
               login(selectedRole, email);
               showToast({
                 type: 'info',
-                message: 'Authenticated via Acme Okta / Azure AD SAML Single Sign-On.',
+                message: 'Authenticated via Inbox Infotech Okta / Azure AD SAML Single Sign-On.',
               });
             }}
             className="w-full h-10 bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-subtle)] border border-[var(--border-default)] rounded-[8px] text-[13px] font-medium text-[var(--text-primary)] transition-colors duration-150 flex items-center justify-center space-x-2 cursor-pointer"
           >
             <Shield size={16} strokeWidth={1.5} className="text-[var(--text-secondary)]" />
-            <span>Continue with Acme Corporate SSO</span>
+            <span>Continue with Inbox Infotech Corporate SSO</span>
           </button>
         </div>
       </div>

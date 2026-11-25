@@ -25,7 +25,7 @@ export function AskOrbitEntryPoint({ onOpen, onSelectPrompt }: AskOrbitEntryPoin
             </span>
           </div>
           <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">
-            Verified answers from Acme Financial Services internal policy manuals and statutory databases
+            Verified answers from Inbox Infotech internal policy manuals and statutory databases
           </p>
         </div>
 

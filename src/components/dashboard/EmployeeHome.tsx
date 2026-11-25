@@ -440,7 +440,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
               <div className="p-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface-subtle)] flex items-center justify-between">
                 <div>
                   <span className="font-bold text-[var(--text-primary)] block">EPFO UAN Form 13 Transfer</span>
-                  <span className="text-[11px] text-[var(--text-secondary)]">Kotak Securities to Acme Fin EPFO account</span>
+                  <span className="text-[11px] text-[var(--text-secondary)]">Kotak Securities to Inbox Infotech EPFO account</span>
                 </div>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
                   In Progress (HR Desk)
@@ -582,7 +582,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
               <div className="p-2.5 border border-[var(--border-subtle)] rounded-lg flex items-center justify-between bg-[var(--bg-surface-subtle)]">
                 <div>
                   <span className="font-bold text-[var(--text-primary)] block">Vikram Patel</span>
-                  <span className="text-[11px] text-[var(--text-tertiary)]">4 Years at Acme (Anniversary)</span>
+                  <span className="text-[11px] text-[var(--text-tertiary)]">4 Years at Inbox Infotech (Anniversary)</span>
                 </div>
                 <button
                   onClick={() => showToast({ type: 'success', message: 'Sent congratulations to Vikram Patel!' })}
@@ -607,7 +607,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
               <div>
                 <span className="font-bold text-[var(--text-primary)] block">{currentUser.reportingManager}</span>
                 <span className="text-[11px] text-[var(--text-secondary)]">Head of Research & Executive VP</span>
-                <span className="text-[10px] text-[var(--text-tertiary)] block font-mono">vikram.singhania@acmefin.in</span>
+                <span className="text-[10px] text-[var(--text-tertiary)] block font-mono">vikram.singhania@inboxinfotech.in</span>
               </div>
             </div>
             <div className="pt-2 text-[11px] text-[var(--text-tertiary)] flex justify-between items-center border-t border-[var(--border-subtle)]">
@@ -702,7 +702,7 @@ export function EmployeeHome({ onOpenDrawer }: EmployeeHomeProps) {
           <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-xl shadow-2xl max-w-xl w-full p-6 space-y-4 text-[12px]">
             <div className="flex items-center justify-between border-b pb-3">
               <div>
-                <h3 className="text-[16px] font-bold text-[var(--text-primary)]">Acme Financial Services — Payslip</h3>
+                <h3 className="text-[16px] font-bold text-[var(--text-primary)]">Inbox Infotech — Payslip</h3>
                 <span className="text-[11px] text-[var(--text-tertiary)] font-mono">Period: November 2026 • Value Date: 30 Nov 2026</span>
               </div>
               <button onClick={() => setIsPayslipModalOpen(false)} className="p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] cursor-pointer">

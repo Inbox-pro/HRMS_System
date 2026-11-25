@@ -85,7 +85,7 @@ export function PeoplePage({ onSelectEmployee }: PeoplePageProps) {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `acme_workforce_directory_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `inbox_infotech_workforce_directory_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -105,7 +105,7 @@ export function PeoplePage({ onSelectEmployee }: PeoplePageProps) {
 
     const created = addEmployee({
       ...newEmp,
-      email: newEmp.email || `${newEmp.name.toLowerCase().replace(/\s+/g, '.')}@acmefin.in`,
+      email: newEmp.email || `${newEmp.name.toLowerCase().replace(/\s+/g, '.')}@inboxinfotech.in`,
       phone: newEmp.phone || '+91 98200 11223',
     });
 
@@ -412,7 +412,7 @@ export function PeoplePage({ onSelectEmployee }: PeoplePageProps) {
                   <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">Corporate Email</label>
                   <input
                     type="email"
-                    placeholder="name@acmefin.in"
+                    placeholder="name@inboxinfotech.in"
                     value={newEmp.email}
                     onChange={(e) => setNewEmp({ ...newEmp, email: e.target.value })}
                     className="w-full px-2.5 py-1.5 rounded border border-[var(--border-default)] bg-[var(--bg-surface)] text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"

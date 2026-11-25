@@ -137,7 +137,7 @@ export function HiringPage({ role }: HiringPageProps) {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `acme_candidates_pipeline_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `inbox_infotech_candidates_pipeline_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

@@ -81,7 +81,7 @@ export function FloatingAiRobot() {
       } else if (lower.includes('manager') || lower.includes('reporting')) {
         reply = `Your reporting manager is **${currentUser.reportingManager}** (Head of Research). You have your bi-weekly 1-on-1 scheduled for **Thursday at 03:30 PM** at the BKC Research Pod.`;
       } else {
-        reply = `I have cross-checked the Acme Financial Services enterprise policy engine. All systems are operational. You can ask me to draft leave handovers, check provident fund balances, or verify tax declarations.`;
+        reply = `I have cross-checked the Inbox Infotech enterprise policy engine. All systems are operational. You can ask me to draft leave handovers, check provident fund balances, or verify tax declarations.`;
       }
 
       setMessages((prev) => [

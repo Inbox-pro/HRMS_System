@@ -261,7 +261,7 @@ export function DashboardContent() {
             <div className="flex items-center space-x-2">
               <span className="font-medium text-[var(--text-secondary)]">Orbit HR Enterprise v2.4</span>
               <span>•</span>
-              <span>Acme Financial Services Limited</span>
+              <span>Inbox Infotech</span>
               <span>•</span>
               <span className="text-[var(--success-text)] font-medium">All systems operational</span>
             </div>

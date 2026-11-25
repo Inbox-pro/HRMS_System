@@ -195,7 +195,7 @@ export function PayrollPage({ role }: PayrollPageProps) {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `acme_payroll_disbursement_nov2026.csv`);
+    link.setAttribute('download', `inbox_infotech_payroll_disbursement_nov2026.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -666,7 +666,7 @@ export function PayrollPage({ role }: PayrollPageProps) {
             <div className="border-b border-[var(--border-subtle)] pb-4 flex items-start justify-between">
               <div>
                 <h3 className="text-[18px] font-bold text-[var(--text-primary)] tracking-tight">
-                  ACME FINANCIAL SERVICES LIMITED
+                  INBOX INFOTECH
                 </h3>
                 <p className="text-[11px] text-[var(--text-tertiary)] font-mono mt-0.5">
                   CIN: L65920MH2010PLC204812 • SEBI Reg: INZ000219438
@@ -801,7 +801,7 @@ export function PayrollPage({ role }: PayrollPageProps) {
             {/* Action Bar */}
             <div className="flex items-center justify-between pt-2">
               <span className="text-[11px] text-[var(--text-tertiary)]">
-                Digitally generated and verified by Acme Financial Services HR & Finance Department.
+                Digitally generated and verified by Inbox Infotech HR & Finance Department.
               </span>
               <button
                 onClick={() => window.print()}

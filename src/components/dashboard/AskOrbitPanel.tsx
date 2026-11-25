@@ -56,7 +56,7 @@ export function AskOrbitPanel({ isOpen, onClose }: AskOrbitPanelProps) {
     // Realistic intelligent simulated response based on company policy and live HRMS data
     setTimeout(() => {
       let replyText = '';
-      let sources: string[] = ['Acme HR Manual FY 2026-27'];
+      let sources: string[] = ['Inbox Infotech HR Manual FY 2026-27'];
       let followups: string[] = [];
 
       const lower = text.toLowerCase();
@@ -71,7 +71,7 @@ export function AskOrbitPanel({ isOpen, onClose }: AskOrbitPanelProps) {
       } else if (lower.includes('ananya') || lower.includes('leave balance') || lower.includes('coverage')) {
         replyText =
           '**Ananya Iyer (EMP-10482)** has applied for **5 days of Earned Leave (02 Dec – 06 Dec 2026)**. Her current leave balances are:\n- Casual Leave: 4.5 days\n- Earned Leave: 12.0 days\n- Sick Leave: 6.0 days\n\nHer institutional equity research morning briefs have been formally handed over to **Rohan Mehta**. Coverage sign-off was confirmed by Vikramaditya Singhania.';
-        sources = ['Acme Leave Register 2026', 'Handover Docket HD-10482'];
+        sources = ['Inbox Infotech Leave Register 2026', 'Handover Docket HD-10482'];
         followups = ['Approve Ananya leave request now', 'View Ananya Iyer full employee file'];
       } else if (lower.includes('attrition') || lower.includes('sales') || lower.includes('tech')) {
         replyText =
@@ -80,12 +80,12 @@ export function AskOrbitPanel({ isOpen, onClose }: AskOrbitPanelProps) {
         followups = ['What were the exit interview reasons in Sales?', 'Download turnover cohort report'];
       } else if (lower.includes('pf') || lower.includes('epfo') || lower.includes('contribution')) {
         replyText =
-          'Acme Financial Services employs 1,142 PF-eligible members. The employer contribution for November 2026 is projected at **₹34.20 Lakh** (including 3.67% EPF, 8.33% EPS capped at ₹15,000 wage ceiling, and 0.5% EDLI charges). Due date for ECR remittance is **15 Dec 2026**.';
+          'Inbox Infotech employs 1,142 PF-eligible members. The employer contribution for November 2026 is projected at **₹34.20 Lakh** (including 3.67% EPF, 8.33% EPS capped at ₹15,000 wage ceiling, and 0.5% EDLI charges). Due date for ECR remittance is **15 Dec 2026**.';
         sources = ['EPFO Unified Portal API Sync', 'Nov 2026 Payroll Calculation'];
         followups = ['Download EPFO ECR text format', 'Show ESIC contribution estimate'];
       } else {
-        replyText = `Based on Acme Financial Services live database, we have **1,284 total employees** across Mumbai, Pune, Surat, and Bengaluru. Current biometric attendance is **92.8% active today**. All payroll calculations for November (₹4.82 Cr) are progressing through Step 3 (Statutory Tax Reconciliations).`;
-        sources = ['Acme Enterprise Data Store', 'Biometric Gate Log API'];
+        replyText = `Based on Inbox Infotech live database, we have **1,284 total employees** across Mumbai, Pune, Surat, and Bengaluru. Current biometric attendance is **92.8% active today**. All payroll calculations for November (₹4.82 Cr) are progressing through Step 3 (Statutory Tax Reconciliations).`;
+        sources = ['Inbox Infotech Enterprise Data Store', 'Biometric Gate Log API'];
         followups = ['Show me open positions in Technology', 'Check compliance checklist for this month'];
       }
 
@@ -134,7 +134,7 @@ export function AskOrbitPanel({ isOpen, onClose }: AskOrbitPanelProps) {
                 </span>
               </div>
               <p className="text-[11px] text-[var(--text-tertiary)]">
-                Acme HR Knowledge Base • Indian Statutory Rules
+                Inbox Infotech HR Knowledge Base • Indian Statutory Rules
               </p>
             </div>
           </div>
@@ -249,7 +249,7 @@ export function AskOrbitPanel({ isOpen, onClose }: AskOrbitPanelProps) {
             </button>
           </form>
           <div className="mt-2 flex items-center justify-between text-[10px] text-[var(--text-tertiary)]">
-            <span>Powered by Acme Policy Semantic Engine</span>
+            <span>Powered by Inbox Infotech Policy Semantic Engine</span>
             <span>Confidential HR data</span>
           </div>
         </div>
